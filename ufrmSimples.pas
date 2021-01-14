@@ -11,7 +11,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, dxSkinsCore, dxSkinProject1;
 
 type
   TfrmSimples = class(TForm)

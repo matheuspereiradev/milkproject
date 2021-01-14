@@ -24,7 +24,7 @@ uses
   dxSkinsdxBarPainter, cxTextEdit, cxContainer, cxEdit, dxSkinsForm,
   dxStatusBar, dxRibbonStatusBar, cxLabel, dxGallery, dxGalleryControl,
   dxRibbonBackstageViewGalleryControl, System.ImageList, Vcl.ImgList, Data.DB,
-  Data.Win.ADODB, cxImageList, cxButtonEdit, cxDropDownEdit;
+  Data.Win.ADODB, cxImageList, cxButtonEdit, cxDropDownEdit, dxSkinProject1;
 
 type
   TfrmPrincipal = class(TdxRibbonForm)
@@ -46,16 +46,20 @@ type
     dxBarButton2: TdxBarButton;
     dxBarManager1Bar4: TdxBar;
     dxBarLargeButton4: TdxBarLargeButton;
-    dxRibbon1Tab2: TdxRibbonTab;
     dxBarLargeButton5: TdxBarLargeButton;
     qry: TADOQuery;
-    dxBarManager1Bar6: TdxBar;
     dxBarLargeButton6: TdxBarLargeButton;
     dxBarLargeButton7: TdxBarLargeButton;
+    dxBarManager1Bar5: TdxBar;
+    dxBarLargeButton8: TdxBarLargeButton;
+    dxBarLargeButton9: TdxBarLargeButton;
+    dxBarManager1Bar6: TdxBar;
     procedure FormCreate(Sender: TObject);
     procedure dxBarLargeButton4Click(Sender: TObject);
     procedure dxBarLargeButton6Click(Sender: TObject);
     procedure dxBarLargeButton5Click(Sender: TObject);
+    procedure dxBarLargeButton8Click(Sender: TObject);
+    procedure dxBarLargeButton9Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -70,7 +74,7 @@ implementation
 {$R *.dfm}
 
 uses uDM, ufrmCadProduto,
-  ufrmCadUnidadesDeMedida, ufrmCadPessoa;
+  ufrmCadUnidadesDeMedida, ufrmCadPessoa, ufrmCadCompra, ufrmPainelCompras;
 
 { TForm2 }
 
@@ -92,6 +96,18 @@ procedure TfrmPrincipal.dxBarLargeButton6Click(Sender: TObject);
 begin
   frmCadUnidadesDeMedida:=TfrmCadUnidadesDeMedida.Create(self);
   frmCadUnidadesDeMedida.show;
+end;
+
+procedure TfrmPrincipal.dxBarLargeButton8Click(Sender: TObject);
+begin
+  frmCadCompra:=TfrmCadCompra.Create(self);
+  frmCadCompra.show;
+end;
+
+procedure TfrmPrincipal.dxBarLargeButton9Click(Sender: TObject);
+begin
+  frmPainelCompras:=TfrmPainelCompras.Create(self);
+  frmPainelCompras.Show;
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);

@@ -14,7 +14,7 @@ uses
   cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, dxDateRanges, Data.DB,
   cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, cxPC, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, dxSkinsCore, dxSkinProject1;
 
 type
   TfrmCadBase = class(TfrmSimples)

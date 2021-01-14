@@ -4,8 +4,6 @@ inherited frmCadBase: TfrmCadBase
   PixelsPerInch = 96
   TextHeight = 13
   inherited dxRibbon1: TdxRibbon
-    ExplicitLeft = 0
-    ExplicitWidth = 675
     inherited dxRibbon1Tab1: TdxRibbonTab
       Index = 0
     end
@@ -16,7 +14,7 @@ inherited frmCadBase: TfrmCadBase
     Width = 675
     Height = 357
     Align = alClient
-    TabOrder = 5
+    TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.Kind = lfUltraFlat
@@ -34,6 +32,8 @@ inherited frmCadBase: TfrmCadBase
       Caption = 'Lista'
       ImageIndex = 0
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 745
       ExplicitHeight = 409
       object cxGrid: TcxGrid
@@ -65,6 +65,10 @@ inherited frmCadBase: TfrmCadBase
       Caption = 'A'#231#245'es'
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   inherited dxBarManager1: TdxBarManager

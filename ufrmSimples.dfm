@@ -32,8 +32,6 @@ object frmSimples: TfrmSimples
     Contexts = <>
     TabOrder = 0
     TabStop = False
-    ExplicitLeft = -78
-    ExplicitWidth = 753
     object dxRibbon1Tab1: TdxRibbonTab
       Active = True
       Caption = 'Principal'

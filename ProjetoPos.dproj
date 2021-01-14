@@ -125,6 +125,18 @@
             <Form>frmCadPessoa</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="ufrmCadSubAbas.pas">
+            <Form>frmCadSubAbas</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ufrmCadCompra.pas">
+            <Form>frmCadCompra</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ufrmPainelCompras.pas">
+            <Form>frmPainelCompras</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
