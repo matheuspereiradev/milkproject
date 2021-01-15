@@ -4,7 +4,7 @@ object frmPainelCompras: TfrmPainelCompras
   BorderIcons = [biSystemMenu]
   Caption = 'Painel de Compras'
   ClientHeight = 679
-  ClientWidth = 1039
+  ClientWidth = 1051
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,8 +22,9 @@ object frmPainelCompras: TfrmPainelCompras
     Align = alTop
     Style.BorderStyle = ebsNone
     TabOrder = 0
+    ExplicitWidth = 1039
     Height = 89
-    Width = 1039
+    Width = 1051
     object cbFornecedor: TcxLookupComboBox
       Left = 18
       Top = 44
@@ -115,10 +116,10 @@ object frmPainelCompras: TfrmPainelCompras
       LookAndFeel.NativeStyle = True
     end
     object cxButton1: TcxButton
-      Left = 896
-      Top = 39
+      Left = 919
+      Top = 33
       Width = 129
-      Height = 25
+      Height = 32
       Caption = 'Atualizar'
       LookAndFeel.Kind = lfStandard
       LookAndFeel.NativeStyle = True
@@ -152,11 +153,12 @@ object frmPainelCompras: TfrmPainelCompras
   object cxGrid1: TcxGrid
     Left = 0
     Top = 89
-    Width = 1039
+    Width = 1051
     Height = 590
     Align = alClient
     TabOrder = 1
     LookAndFeel.NativeStyle = True
+    ExplicitWidth = 1039
     ExplicitHeight = 544
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>

@@ -69,6 +69,10 @@ object cadAbasANtigo: TcadAbasANtigo
     object cxTabSheet1: TcxTabSheet
       Caption = 'Lista'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid: TcxGrid
         Left = 0
         Top = 0
@@ -79,6 +83,7 @@ object cadAbasANtigo: TcadAbasANtigo
         LookAndFeel.NativeStyle = True
         object cxGridDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          OnCellDblClick = cxGridDBTableView1CellDblClick
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>

@@ -1,5 +1,5 @@
 inherited frmCadCompra: TfrmCadCompra
-  Caption = 'CADASTRO DE COMPRAS'
+  Caption = 'Cadastro de compra'
   ClientHeight = 494
   ExplicitHeight = 533
   PixelsPerInch = 96
@@ -61,7 +61,6 @@ inherited frmCadCompra: TfrmCadCompra
       OnShow = cxTabSheet2Show
       inherited cxPageControl1: TcxPageControl
         Height = 364
-        Properties.ActivePage = tsDetalhes
         ClientRectBottom = 360
         inherited tsPrincipal: TcxTabSheet
           ExplicitLeft = 4

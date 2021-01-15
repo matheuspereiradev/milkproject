@@ -14,7 +14,7 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, cxPC, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dxSkinsForm,
   dxRibbon, dxBar, cxBarEditItem, cxClasses, System.ImageList, Vcl.ImgList,
-  cxImageList;
+  cxImageList, dxSkinsCore, dxSkinProject1;
 
 type
   TcadAbasANtigo = class(TForm)
@@ -48,6 +48,9 @@ type
     cxTabSheet3: TcxTabSheet;
     procedure dtsStateChange(Sender: TObject);
     procedure btnAdcClick(Sender: TObject);
+    procedure cxGridDBTableView1CellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
   private
     { Private declarations }
   public
@@ -64,6 +67,13 @@ implementation
 procedure TcadAbasANtigo.btnAdcClick(Sender: TObject);
 begin
     dts.DataSet.Append;
+end;
+
+procedure TcadAbasANtigo.cxGridDBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  //colocar pra editar
 end;
 
 procedure TcadAbasANtigo.dtsStateChange(Sender: TObject);
