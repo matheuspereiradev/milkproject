@@ -32,7 +32,7 @@ type
     dxBarManager1Bar1: TdxBar;
     dxRibbon1: TdxRibbon;
     rbtPrincipal: TdxRibbonTab;
-    dxRibbonStatusBar1: TdxRibbonStatusBar;
+    RBStatus: TdxRibbonStatusBar;
     dxSkinController1: TdxSkinController;
     dxBarManager1Bar2: TdxBar;
     cxBarEditItem1: TcxBarEditItem;
@@ -115,6 +115,8 @@ begin
   DisableAero := True;
 
   DM:=TDM.Create(self);
+
+  RBStatus.Panels[0].Text := 'V.: 0.0.1.1';
 
   //DM.con.Connected:=true;
 

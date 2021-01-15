@@ -34,7 +34,6 @@ object frmPrincipal: TfrmPrincipal
     TabAreaToolbar.Toolbar = dxBarManager1Bar2
     TabOrder = 0
     TabStop = False
-    ExplicitWidth = 1233
     object rbtPrincipal: TdxRibbonTab
       Active = True
       Caption = 'Principal'
@@ -58,20 +57,29 @@ object frmPrincipal: TfrmPrincipal
       Index = 0
     end
   end
-  object dxRibbonStatusBar1: TdxRibbonStatusBar
+  object RBStatus: TdxRibbonStatusBar
     Left = 0
     Top = 709
     Width = 1393
     Height = 23
-    Panels = <>
+    Panels = <
+      item
+        PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
+        Text = 'VERSAO'
+        Width = 80
+      end
+      item
+        PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
+        Text = 
+          'DESENVOLVIDO POR MATHEUSPEREIRADEV '#169' TODOS OS DIREITOS RESERVADO' +
+          'S'
+      end>
     Ribbon = dxRibbon1
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clDefault
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
-    ExplicitTop = 739
-    ExplicitWidth = 1233
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -142,7 +150,7 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton7'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -162,7 +170,7 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton4'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -186,7 +194,7 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton9'
         end>
       OneOnRow = False
-      Row = 1
+      Row = 0
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -209,7 +217,7 @@ object frmPrincipal: TfrmPrincipal
           Visible = True
           ItemName = 'dxBarLargeButton5'
         end>
-      OneOnRow = True
+      OneOnRow = False
       Row = 0
       UseOwnFont = False
       Visible = True

@@ -1,5 +1,7 @@
 inherited frmCadCompra: TfrmCadCompra
   Caption = 'CADASTRO DE COMPRAS'
+  ClientHeight = 494
+  ExplicitHeight = 533
   PixelsPerInch = 96
   TextHeight = 13
   object Label6: TLabel [0]
@@ -15,12 +17,15 @@ inherited frmCadCompra: TfrmCadCompra
     end
   end
   inherited pc: TcxPageControl
+    Height = 372
+    ClientRectBottom = 368
     inherited cxTabSheet1: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 4
       ExplicitWidth = 667
       ExplicitHeight = 349
       inherited cxGrid: TcxGrid
+        Height = 364
         ExplicitWidth = 667
         ExplicitHeight = 349
         inherited cxGridDBTableView1: TcxGridDBTableView
@@ -55,8 +60,14 @@ inherited frmCadCompra: TfrmCadCompra
     inherited cxTabSheet2: TcxTabSheet
       OnShow = cxTabSheet2Show
       inherited cxPageControl1: TcxPageControl
+        Height = 364
         Properties.ActivePage = tsDetalhes
+        ClientRectBottom = 360
         inherited tsPrincipal: TcxTabSheet
+          ExplicitLeft = 4
+          ExplicitTop = 24
+          ExplicitWidth = 659
+          ExplicitHeight = 321
           object Label1: TLabel
             Left = 16
             Top = 16
@@ -167,16 +178,21 @@ inherited frmCadCompra: TfrmCadCompra
         end
         inherited tsDetalhes: TcxTabSheet
           Caption = 'Produtos'
+          ExplicitLeft = 4
+          ExplicitTop = 24
+          ExplicitWidth = 659
+          ExplicitHeight = 321
           object cxGrid1: TcxGrid
             Left = 0
-            Top = 69
+            Top = 65
             Width = 659
-            Height = 252
-            Align = alBottom
+            Height = 239
+            Align = alClient
             TabOrder = 0
             LookAndFeel.Kind = lfFlat
             LookAndFeel.NativeStyle = True
-            ExplicitTop = 70
+            ExplicitTop = 69
+            ExplicitHeight = 252
             object cxGrid1DBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = DataSource1
@@ -275,8 +291,6 @@ inherited frmCadCompra: TfrmCadCompra
             Align = alTop
             Style.BorderStyle = ebsNone
             TabOrder = 1
-            ExplicitLeft = 112
-            ExplicitTop = -48
             Height = 65
             Width = 659
             object cxLabel1: TcxLabel
@@ -310,7 +324,7 @@ inherited frmCadCompra: TfrmCadCompra
             object cxButton1: TcxButton
               Left = 456
               Top = 24
-              Width = 161
+              Width = 177
               Height = 25
               Caption = 'Adicionar produtos'
               LookAndFeel.Kind = lfOffice11
@@ -327,9 +341,32 @@ inherited frmCadCompra: TfrmCadCompra
                 item
                   FieldName = 'NOME'
                 end>
+              Properties.ListOptions.ShowHeader = False
               Properties.ListSource = dsitem
+              Style.TransparentBorder = True
               TabOrder = 6
               Width = 191
+            end
+          end
+          object cxGroupBox2: TcxGroupBox
+            Left = 0
+            Top = 304
+            Align = alBottom
+            Style.BorderStyle = ebsNone
+            TabOrder = 2
+            Height = 32
+            Width = 659
+            object lblTotal: TcxLabel
+              Left = 439
+              Top = 6
+              Caption = 'Valor Total:'
+              ParentFont = False
+              Style.Font.Charset = DEFAULT_CHARSET
+              Style.Font.Color = clWindowText
+              Style.Font.Height = -15
+              Style.Font.Name = 'Tahoma'
+              Style.Font.Style = [fsBold]
+              Style.IsFontAssigned = True
             end
           end
         end
@@ -670,5 +707,39 @@ inherited frmCadCompra: TfrmCadCompra
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object FDQTotal: TFDQuery
+    Connection = DM.FDConn
+    Transaction = DM.FDTrans
+    UpdateTransaction = DM.FDTrans
+    UpdateOptions.AssignedValues = [uvGeneratorName]
+    UpdateOptions.GeneratorName = 'GEN_COMPRA_ID'
+    UpdateOptions.AutoIncFields = 'IDCOMPRA'
+    SQL.Strings = (
+      'select i.idcompra, sum(i.vrunidade*i.qtunidade) as valor'
+      'from itemcompra i'
+      'where i.idcompra = :idcompra'
+      'group by i.idcompra')
+    Left = 284
+    Top = 258
+    ParamData = <
+      item
+        Name = 'IDCOMPRA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQTotalIDCOMPRA: TIntegerField
+      FieldName = 'IDCOMPRA'
+      Origin = 'IDCOMPRA'
+    end
+    object FDQTotalVALOR: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALOR'
+      Origin = 'VALOR'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
   end
 end

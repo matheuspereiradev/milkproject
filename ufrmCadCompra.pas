@@ -92,6 +92,11 @@ type
     cxDBCurrencyEdit1: TcxDBCurrencyEdit;
     FDPRemoveItem: TFDStoredProc;
     dxBarCombo1: TdxBarCombo;
+    cxGroupBox2: TcxGroupBox;
+    lblTotal: TcxLabel;
+    FDQTotal: TFDQuery;
+    FDQTotalIDCOMPRA: TIntegerField;
+    FDQTotalVALOR: TBCDField;
     procedure btnAdcClick(Sender: TObject);
     procedure cxTabSheet2Show(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
@@ -103,6 +108,7 @@ type
   public
     procedure MontaQry; override;
     procedure AtualizaItens;
+    procedure CalculaValorTotal;
   end;
 
 var
@@ -130,6 +136,16 @@ begin
   cxDBDateEdit1.Date := Date();
 end;
 
+procedure TfrmCadCompra.CalculaValorTotal;
+begin
+  FDQTotal.Close;
+  FDQTotal.Params.ClearValues;
+  FDQTotal.Params.Items[0].Value := FDQueryID.Value;
+  FDQTotal.Open;
+
+  lblTotal.Caption:= 'Total: '+ CurrToStr(FDQTotal.FieldByName('VALOR').AsCurrency);
+end;
+
 procedure TfrmCadCompra.cxButton1Click(Sender: TObject);
 begin
   inherited;
@@ -138,7 +154,7 @@ begin
   FDPInsereItem.Params.ParamByName('VRUNIDADE').Value := edtValor.Value;
   FDPInsereItem.Params.ParamByName('QTUNIDADE').Value := edtQuantidade.Text;
   FDPInsereItem.Execute;
-
+  CalculaValorTotal;
   AtualizaItens;
 end;
 
@@ -148,6 +164,7 @@ begin
   inherited;
   FDPRemoveItem.Params.ParamByName('IDITEMCOMPRA').Value := FDQProdutosCOmpraidItemCompra.Value;
   FDPRemoveItem.Execute;
+  CalculaValorTotal;
   AtualizaItens;
 end;
 
@@ -155,6 +172,7 @@ procedure TfrmCadCompra.cxTabSheet2Show(Sender: TObject);
 begin
   inherited;
   AtualizaItens;
+  CalculaValorTotal;
 end;
 
 procedure TfrmCadCompra.dtsStateChange(Sender: TObject);
