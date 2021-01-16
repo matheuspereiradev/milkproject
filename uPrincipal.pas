@@ -54,6 +54,9 @@ type
     dxBarLargeButton8: TdxBarLargeButton;
     dxBarLargeButton9: TdxBarLargeButton;
     dxBarManager1Bar6: TdxBar;
+    dxBarManager1Bar7: TdxBar;
+    dxBarLargeButton10: TdxBarLargeButton;
+    dxBarLargeButton11: TdxBarLargeButton;
     procedure FormCreate(Sender: TObject);
     procedure dxBarLargeButton4Click(Sender: TObject);
     procedure dxBarLargeButton6Click(Sender: TObject);

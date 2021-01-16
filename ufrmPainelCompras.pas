@@ -14,7 +14,8 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, cxButtonEdit, cxCurrencyEdit, Vcl.ComCtrls, dxCore,
   cxDateUtils, cxDropDownEdit, cxCalendar, cxLabel, cxTextEdit, cxMaskEdit,
-  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxSpinEdit, cxRadioGroup;
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxSpinEdit, cxRadioGroup,
+  frxClass, frxDBSet, cxCheckBox;
 
 type
   TfrmPainelCompras = class(TForm)
@@ -64,10 +65,27 @@ type
     FDQFornecedorID: TFDAutoIncField;
     FDQFornecedorNOME: TStringField;
     dtsFornecedor: TDataSource;
+    cxGrid1DBTableView1Column1: TcxGridDBColumn;
+    FDPESTORNAPAGAMENTOCOMPRA: TFDStoredProc;
+    cxButton2: TcxButton;
+    cxButton3: TcxButton;
+    dsQry: TfrxDBDataset;
+    frx: TfrxReport;
+    frxEMLInhas: TfrxReport;
+    PopupRelatorio: TPopupMenu;
+    Relatrioemlinhas1: TMenuItem;
+    Relatrioemcampos1: TMenuItem;
+    cxGrid1DBTableView1FLPAGA: TcxGridDBColumn;
     procedure cxGrid1DBTableView1Column2PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure FormCreate(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
+    procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure cxButton2Click(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
+    procedure Relatrioemlinhas1Click(Sender: TObject);
+    procedure Relatrioemcampos1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -82,9 +100,44 @@ implementation
 
 {$R *.dfm}
 
+uses ufrmCadCompra;
+
 procedure TfrmPainelCompras.cxButton1Click(Sender: TObject);
 begin
   MontaQry;
+end;
+
+procedure TfrmPainelCompras.cxButton2Click(Sender: TObject);
+begin
+  frmCadCompra:=TfrmCadCompra.Create(self);
+  frmCadCompra.show;
+end;
+
+procedure TfrmPainelCompras.cxButton3Click(Sender: TObject);
+begin
+    with TButton(Sender).ClientToScreen(point(0, TButton(Sender).Height)) do
+      PopupRelatorio.Popup(X, Y);
+end;
+
+procedure TfrmPainelCompras.cxGrid1DBTableView1Column1PropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  if (FDQuery.FieldByName('VRPAGO').AsCurrency > 0) OR (FDQuery.FieldByName('FLPAGA').AsInteger = 1) then
+  begin
+    if Application.MessageBox('Deseja realmente estornar o pagamento dessa compra?','Milk',mb_yesno + mb_iconquestion) = id_yes then
+    begin
+      FDPESTORNAPAGAMENTOCOMPRA.Params.ParamByName('IDCOMPRA').Value := FDQuery.FieldByName('ID').AsInteger;
+      FDPESTORNAPAGAMENTOCOMPRA.Execute;
+
+      Application.MessageBox('Estorno realizado com sucesso', 'Milk', MB_OK);
+    end;
+
+
+    MontaQry;
+  end
+  else
+    Application.MessageBox('Não foi encontrado nenhum pagamento para essa compra','Milk',MB_ICONEXCLAMATION + MB_OK + MB_SYSTEMMODAL);
+
 end;
 
 procedure TfrmPainelCompras.cxGrid1DBTableView1Column2PropertiesButtonClick(
@@ -95,16 +148,18 @@ begin
   if FDQuery.FieldByName('FLPAGA').AsInteger = 0 then
   begin
     vrDigitado := '';
-    vrDigitado := InputBox('Milk', 'Digite o valor do pagamento', FDQuery.FieldByName('VALORDACOMPRA').AsString);
+    vrDigitado := InputBox('Milk', 'Digite o valor do pagamento', '');
 
     if vrDigitado = '' then
     begin
+      Application.MessageBox('Digite um valor de pagamento','Milk',MB_ICONEXCLAMATION + MB_OK + MB_SYSTEMMODAL);
       exit;
     end;
 
     try
       vrPgto:=StrToCurr(vrDigitado);
     except
+      Application.MessageBox('Valor do pagamento incorreto','Milk',MB_ICONEXCLAMATION + MB_OK + MB_SYSTEMMODAL);
       exit;
     end;
 
@@ -131,10 +186,11 @@ end;
 
 procedure TfrmPainelCompras.FormCreate(Sender: TObject);
 begin
- MontaQry;
- MontaFornecedores;
+
  dtInicio.Date := Date()-15;
  dtFim.Date:=Date();
+  MontaQry;
+ MontaFornecedores;
 end;
 
 procedure TfrmPainelCompras.MontaFornecedores;
@@ -173,6 +229,16 @@ begin
 
   end;
   FDQuery.Open;
+end;
+
+procedure TfrmPainelCompras.Relatrioemcampos1Click(Sender: TObject);
+begin
+  frx.ShowReport;
+end;
+
+procedure TfrmPainelCompras.Relatrioemlinhas1Click(Sender: TObject);
+begin
+  frxEmLinhas.ShowReport;
 end;
 
 end.

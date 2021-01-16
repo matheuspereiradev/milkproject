@@ -53,6 +53,9 @@ object frmPrincipal: TfrmPrincipal
         item
           Caption = 'Estoque'
           ToolbarName = 'dxBarManager1Bar6'
+        end
+        item
+          ToolbarName = 'dxBarManager1Bar7'
         end>
       Index = 0
     end
@@ -150,7 +153,7 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton7'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -170,7 +173,7 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton4'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -194,7 +197,7 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton9'
         end>
       OneOnRow = False
-      Row = 0
+      Row = 1
       UseOwnFont = False
       Visible = True
       WholeRow = False
@@ -218,6 +221,30 @@ object frmPrincipal: TfrmPrincipal
           ItemName = 'dxBarLargeButton5'
         end>
       OneOnRow = False
+      Row = 1
+      UseOwnFont = False
+      Visible = True
+      WholeRow = False
+    end
+    object dxBarManager1Bar7: TdxBar
+      Caption = 'Custom 5'
+      CaptionButtons = <>
+      DockedLeft = 408
+      DockedTop = 0
+      FloatLeft = 1421
+      FloatTop = 2
+      FloatClientWidth = 0
+      FloatClientHeight = 0
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton10'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton11'
+        end>
+      OneOnRow = True
       Row = 0
       UseOwnFont = False
       Visible = True
@@ -312,6 +339,18 @@ object frmPrincipal: TfrmPrincipal
       Visible = ivAlways
       OnClick = dxBarLargeButton9Click
       LargeImageIndex = 6
+    end
+    object dxBarLargeButton10: TdxBarLargeButton
+      Caption = 'Vendas'
+      Category = 0
+      Hint = 'Vendas'
+      Visible = ivAlways
+    end
+    object dxBarLargeButton11: TdxBarLargeButton
+      Caption = 'Painel de vendas'
+      Category = 0
+      Hint = 'Painel de vendas'
+      Visible = ivAlways
     end
   end
   object dxSkinController1: TdxSkinController

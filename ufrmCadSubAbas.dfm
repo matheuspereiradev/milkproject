@@ -13,37 +13,21 @@ inherited frmCadSubAbas: TfrmCadSubAbas
     ExplicitTop = 122
     ExplicitWidth = 675
     ExplicitHeight = 357
+    inherited cxTabSheet1: TcxTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 4
+      ExplicitWidth = 667
+      ExplicitHeight = 349
+      inherited cxGrid: TcxGrid
+        ExplicitWidth = 667
+        ExplicitHeight = 349
+      end
+    end
     inherited cxTabSheet2: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 4
       ExplicitWidth = 667
       ExplicitHeight = 349
-      object cxPageControl1: TcxPageControl
-        Left = 0
-        Top = 0
-        Width = 667
-        Height = 349
-        Align = alClient
-        TabOrder = 0
-        Properties.ActivePage = tsPrincipal
-        Properties.CustomButtons.Buttons = <>
-        LookAndFeel.Kind = lfStandard
-        LookAndFeel.NativeStyle = True
-        ClientRectBottom = 345
-        ClientRectLeft = 4
-        ClientRectRight = 663
-        ClientRectTop = 24
-        object tsPrincipal: TcxTabSheet
-          Caption = 'Principal'
-          ImageIndex = 0
-          ParentShowHint = False
-          ShowHint = False
-        end
-        object tsDetalhes: TcxTabSheet
-          Caption = 'Detalhes'
-          ImageIndex = 1
-        end
-      end
     end
   end
   inherited dxBarManager1: TdxBarManager

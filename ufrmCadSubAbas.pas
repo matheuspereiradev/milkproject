@@ -18,9 +18,6 @@ uses
 
 type
   TfrmCadSubAbas = class(TfrmCadBase)
-    cxPageControl1: TcxPageControl;
-    tsPrincipal: TcxTabSheet;
-    tsDetalhes: TcxTabSheet;
   private
     { Private declarations }
   public

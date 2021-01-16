@@ -56,7 +56,6 @@ type
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
     cxGrid1: TcxGrid;
-    cxGroupBox1: TcxGroupBox;
     cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
     edtValor: TcxCurrencyEdit;
@@ -97,6 +96,11 @@ type
     FDQTotal: TFDQuery;
     FDQTotalIDCOMPRA: TIntegerField;
     FDQTotalVALOR: TBCDField;
+    cxGroupBox3: TcxGroupBox;
+    gbProdutos: TcxGroupBox;
+    cxGroupBox4: TcxGroupBox;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
     procedure btnAdcClick(Sender: TObject);
     procedure cxTabSheet2Show(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
@@ -179,15 +183,25 @@ procedure TfrmCadCompra.dtsStateChange(Sender: TObject);
 begin
   inherited;
   if FDQuery.State in [dsInsert] then
-    tsDetalhes.Visible:=false
+    gbProdutos.Visible:=false
   else
-    tsDetalhes.Visible:=true;
+    gbProdutos.Visible:=true;
 end;
 
 procedure TfrmCadCompra.MontaQry;
 begin
   inherited;
   FDQuery.close;
+
+  with FDQuery.SQL do
+  begin
+    clear;
+    add('select *                                   ');
+    add('from compra c                              ');
+    add('left join pessoa p on c.idfornecedor=p.id  ');
+    add('where dtexcluiu is null                    ');
+  end;
+
   FDQuery.Open;
   FDQFornecedor.Close;
   FDQFornecedor.Open;
