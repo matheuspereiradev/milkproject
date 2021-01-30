@@ -17,7 +17,7 @@ uses
   cxGrid, cxPC, dxRibbon, cxContainer, cxCalendar, cxDBEdit, cxMaskEdit,
   cxSpinEdit, Vcl.StdCtrls, cxMemo, cxRichEdit, cxDBRichEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, cxGroupBox, dxSkinsCore, dxSkinProject1,
-  cxLabel, cxCurrencyEdit, Vcl.Menus, cxButtons;
+  cxLabel, cxCurrencyEdit, Vcl.Menus, cxButtons, cxCheckBox;
 
 type
   TfrmCadCompra = class(TfrmCadSubAbas)
@@ -34,15 +34,12 @@ type
     FDQueryTELEFONE: TStringField;
     FDQueryOBS_1: TStringField;
     cxGridDBTableView1ID: TcxGridDBColumn;
-    cxGridDBTableView1DESCRICAO: TcxGridDBColumn;
     cxGridDBTableView1DATA: TcxGridDBColumn;
     cxGridDBTableView1VRPAGO: TcxGridDBColumn;
     cxGridDBTableView1NOME: TcxGridDBColumn;
     cxGridDBTableView1TELEFONE: TcxGridDBColumn;
     Label1: TLabel;
     cxDBSpinEdit1: TcxDBSpinEdit;
-    Label2: TLabel;
-    cxDBTextEdit1: TcxDBTextEdit;
     Label3: TLabel;
     cxDBDateEdit1: TcxDBDateEdit;
     Label4: TLabel;
@@ -101,12 +98,18 @@ type
     cxGroupBox4: TcxGroupBox;
     cxLabel4: TcxLabel;
     cxLabel5: TcxLabel;
+    cxGridDBTableView1FLPAGA: TcxGridDBColumn;
+    FDQueryIDCOMPRA: TIntegerField;
+    FDQueryVALORDACOMPRA: TBCDField;
+    cxGridDBTableView1VALORDACOMPRA: TcxGridDBColumn;
+    QryAux: TFDQuery;
     procedure btnAdcClick(Sender: TObject);
     procedure cxTabSheet2Show(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
     procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure dtsStateChange(Sender: TObject);
+    procedure cbProdutoPropertiesChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -138,6 +141,7 @@ procedure TfrmCadCompra.btnAdcClick(Sender: TObject);
 begin
   inherited;
   cxDBDateEdit1.Date := Date();
+  cxDBLookupComboBox1.SetFocus;
 end;
 
 procedure TfrmCadCompra.CalculaValorTotal;
@@ -148,6 +152,20 @@ begin
   FDQTotal.Open;
 
   lblTotal.Caption:= 'Total: '+ CurrToStr(FDQTotal.FieldByName('VALOR').AsCurrency);
+end;
+
+procedure TfrmCadCompra.cbProdutoPropertiesChange(Sender: TObject);
+begin
+  inherited;
+  QryAux.Close;
+  with QryAux.SQL do
+  begin
+    clear;
+    add('select * from item where id = '+String(cbProduto.EditValue));
+  end;
+  QryAux.Open;
+
+  edtValor.Value := QryAux.FieldByName('VALORDOPRODUTO').AsCurrency;
 end;
 
 procedure TfrmCadCompra.cxButton1Click(Sender: TObject);
@@ -198,8 +216,10 @@ begin
     clear;
     add('select *                                   ');
     add('from compra c                              ');
+    add('left join valorcompra v on v.idcompra=c.id ');
     add('left join pessoa p on c.idfornecedor=p.id  ');
     add('where dtexcluiu is null                    ');
+    add('order by c.id desc                         ');
   end;
 
   FDQuery.Open;
@@ -207,6 +227,7 @@ begin
   FDQFornecedor.Open;
   FDQProdutos.Close;
   FDQProdutos.open;
+  cbProduto.ItemIndex:=0;
 end;
 
 end.

@@ -9,18 +9,8 @@ inherited frmCadPessoa: TfrmCadPessoa
   end
   inherited pc: TcxPageControl
     Properties.ActivePage = cxTabSheet2
-    ExplicitLeft = 0
-    ExplicitTop = 122
-    ExplicitWidth = 675
-    ExplicitHeight = 357
     inherited cxTabSheet1: TcxTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 4
-      ExplicitWidth = 667
-      ExplicitHeight = 349
       inherited cxGrid: TcxGrid
-        ExplicitWidth = 667
-        ExplicitHeight = 349
         inherited cxGridDBTableView1: TcxGridDBTableView
           DataController.DataSource = dts
           object cxGridDBTableView1ID: TcxGridDBColumn
@@ -124,6 +114,9 @@ inherited frmCadPessoa: TfrmCadPessoa
     end
     inherited btnDel: TdxBarLargeButton
       ImageIndex = 2
+    end
+    inherited cxPesquisa: TcxBarEditItem
+      InternalEditValue = 'NOME'
     end
   end
   inherited dxSkinController1: TdxSkinController

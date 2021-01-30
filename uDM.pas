@@ -9,7 +9,8 @@ uses
   FireDAC.VCLUI.Login, FireDAC.VCLUI.Wait, FireDAC.VCLUI.Error,
   FireDAC.Phys.FBDef, FireDAC.Comp.ScriptCommands, FireDAC.Stan.Util,
   FireDAC.Comp.Script, FireDAC.Phys.IBBase, FireDAC.Phys.FB, FireDAC.Comp.UI,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.DApt, FireDAC.Comp.DataSet;
 
 type
   TDM = class(TDataModule)
@@ -21,6 +22,7 @@ type
     FDGUIxErrorDialog1: TFDGUIxErrorDialog;
     MilkDrive: TFDPhysFBDriverLink;
     FDScript: TFDScript;
+    QryAux: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

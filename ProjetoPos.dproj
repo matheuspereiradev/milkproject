@@ -144,6 +144,10 @@
             <Form>frmCadVenda</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="ufrmPainelVendas.pas">
+            <Form>frmPainelVendas</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

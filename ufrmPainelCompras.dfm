@@ -1,7 +1,7 @@
 object frmPainelCompras: TfrmPainelCompras
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu]
+  BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'Painel de Compras'
   ClientHeight = 679
   ClientWidth = 1098
@@ -35,6 +35,7 @@ object frmPainelCompras: TfrmPainelCompras
         end>
       Properties.ListOptions.ShowHeader = False
       Properties.ListSource = dtsFornecedor
+      Properties.OnChange = cbFornecedorPropertiesChange
       EditValue = 0
       Style.TransparentBorder = True
       TabOrder = 0
@@ -50,6 +51,7 @@ object frmPainelCompras: TfrmPainelCompras
       Top = 44
       EditValue = 44146d
       TabOrder = 2
+      OnExit = dtInicioExit
       Width = 89
     end
     object cxLabel2: TcxLabel
@@ -62,6 +64,7 @@ object frmPainelCompras: TfrmPainelCompras
       Top = 44
       EditValue = 44146d
       TabOrder = 4
+      OnExit = dtFimExit
       Width = 89
     end
     object cxLabel3: TcxLabel
@@ -73,6 +76,7 @@ object frmPainelCompras: TfrmPainelCompras
       Left = 427
       Top = 44
       TabOrder = 6
+      OnExit = edtCodCompraExit
       Width = 128
     end
     object cxLabel4: TcxLabel
@@ -94,6 +98,7 @@ object frmPainelCompras: TfrmPainelCompras
       Checked = True
       TabOrder = 9
       TabStop = True
+      OnClick = rbTodasClick
       LookAndFeel.NativeStyle = True
     end
     object rbPagas: TcxRadioButton
@@ -103,6 +108,7 @@ object frmPainelCompras: TfrmPainelCompras
       Height = 17
       Caption = 'Somente quitadas'
       TabOrder = 10
+      OnClick = rbPagasClick
       LookAndFeel.NativeStyle = True
     end
     object rbNaoPagas: TcxRadioButton
@@ -112,6 +118,7 @@ object frmPainelCompras: TfrmPainelCompras
       Height = 17
       Caption = 'Somente N'#195'O quitadas'
       TabOrder = 11
+      OnClick = rbNaoPagasClick
       LookAndFeel.NativeStyle = True
     end
     object cxButton1: TcxButton
@@ -225,6 +232,7 @@ object frmPainelCompras: TfrmPainelCompras
     LookAndFeel.NativeStyle = True
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      OnCustomDrawCell = cxGrid1DBTableView1CustomDrawCell
       DataController.DataSource = dts
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
@@ -236,11 +244,6 @@ object frmPainelCompras: TfrmPainelCompras
       object cxGrid1DBTableView1ID: TcxGridDBColumn
         DataBinding.FieldName = 'ID'
         Options.Editing = False
-      end
-      object cxGrid1DBTableView1DESCRICAO: TcxGridDBColumn
-        DataBinding.FieldName = 'DESCRICAO'
-        Options.Editing = False
-        Width = 209
       end
       object cxGrid1DBTableView1DATA: TcxGridDBColumn
         DataBinding.FieldName = 'DATA'
@@ -267,6 +270,7 @@ object frmPainelCompras: TfrmPainelCompras
         Properties.Alignment = taRightJustify
         Properties.ValueChecked = '1'
         Properties.ValueUnchecked = '0'
+        Options.Editing = False
       end
       object cxGrid1DBTableView1NOME: TcxGridDBColumn
         DataBinding.FieldName = 'NOME'
@@ -587,10 +591,35 @@ object frmPainelCompras: TfrmPainelCompras
   object dsQry: TfrxDBDataset
     UserName = 'dsQry'
     CloseDataSource = False
-    DataSet = FDQuery
+    FieldAliases.Strings = (
+      'ID=ID'
+      'DESCRICAO=DESCRICAO'
+      'IDFORNECEDOR=IDFORNECEDOR'
+      'DATA=DATA'
+      'OBS=OBS'
+      'FLPAGA=FLPAGA'
+      'VRPAGO=VRPAGO'
+      'DTEXCLUIU=DTEXCLUIU'
+      'IDCOMPRA=IDCOMPRA'
+      'VALORDACOMPRA=VALORDACOMPRA'
+      'ID_1=ID_1'
+      'NOME=NOMEFORNECEDOR'
+      'TELEFONE=TELEFONEFORNECEDOR'
+      'OBS_1=OBS_1'
+      'ID_2=ID_2'
+      'IDITEM=IDITEM'
+      'IDCOMPRA_1=IDCOMPRA_1'
+      'VRUNIDADE=VRUNIDADECOMPRADA'
+      'QTUNIDADE=QTUNIDADECOMPRADA'
+      'NOME_1=NOMEITEM'
+      'IDUNIDADEDEMEDIDA=IDUNIDADEDEMEDIDA'
+      'UNIDADEMEDIDA=UNIDADEMEDIDA'
+      'VRTOTALITEM=VRTOTALITEM'
+      'SIGLA=SIGLA')
+    DataSet = FDQryRel
     BCDToCurrency = False
-    Left = 616
-    Top = 312
+    Left = 752
+    Top = 144
   end
   object frx: TfrxReport
     Version = '6.7.9'
@@ -633,19 +662,71 @@ object frmPainelCompras: TfrmPainelCompras
       object MasterData1: TfrxMasterData
         FillType = ftBrush
         Frame.Typ = []
-        Height = 128.504020000000000000
-        Top = 18.897650000000000000
+        Height = 18.897650000000000000
+        Top = 173.858380000000000000
         Width = 718.110700000000000000
         DataSet = dsQry
         DataSetName = 'dsQry'
         RowCount = 0
+        object dsQryNOMEITEM: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 92.929190000000000000
+          Width = 124.724490000000000000
+          Height = 18.897650000000000000
+          DataField = 'NOMEITEM'
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."NOMEITEM"]')
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 7.559060000000000000
+          Top = -0.779530000000000000
+          Width = 83.149660000000000000
+          Height = 18.897650000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'ARial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."QTUNIDADECOMPRADA"] [dsQry."SIGLA"]'
+            '')
+          ParentFont = False
+          Formats = <
+            item
+            end
+            item
+            end>
+        end
+      end
+      object GroupHeader1: TfrxGroupHeader
+        FillType = ftBrush
+        Frame.Typ = []
+        Height = 131.724490000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        Condition = 'dsQry."ID"'
         object Memo37: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
           Left = 7.559060000000000000
-          Top = 24.897650000000000000
-          Width = 71.811070000000000000
-          Height = 18.897650000000000000
+          Top = 18.118120000000000000
+          Width = 98.267780000000000000
+          Height = 15.118120000000000000
           DataField = 'ID'
           DataSet = dsQry
           DataSetName = 'dsQry'
@@ -662,10 +743,10 @@ object frmPainelCompras: TfrmPainelCompras
         object Memo38: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 81.826840000000000000
-          Top = 25.677180000000000000
-          Width = 90.708720000000000000
-          Height = 18.897650000000000000
+          Left = 110.826840000000000000
+          Top = 18.897650000000000000
+          Width = 102.047310000000000000
+          Height = 15.118120000000000000
           DataField = 'DATA'
           DataSet = dsQry
           DataSetName = 'dsQry'
@@ -683,8 +764,8 @@ object frmPainelCompras: TfrmPainelCompras
           IndexTag = 1
           AllowVectorExport = True
           Left = 7.559060000000000000
-          Top = 100.488250000000000000
-          Width = 75.590600000000000000
+          Top = 92.708720000000000000
+          Width = 102.047310000000000000
           Height = 18.897650000000000000
           DataSet = dsQry
           DataSetName = 'dsQry'
@@ -704,11 +785,11 @@ object frmPainelCompras: TfrmPainelCompras
         object Memo40: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 7.779530000000000000
-          Top = 65.472480000000000000
-          Width = 170.078850000000000000
+          Left = 6.543290000000000000
+          Top = 55.692950000000000000
+          Width = 211.653680000000000000
           Height = 15.118120000000000000
-          DataField = 'NOME'
+          DataField = 'NOMEFORNECEDOR'
           DataSet = dsQry
           DataSetName = 'dsQry'
           Font.Charset = DEFAULT_CHARSET
@@ -718,15 +799,14 @@ object frmPainelCompras: TfrmPainelCompras
           Font.Style = []
           Frame.Typ = []
           Memo.UTF8W = (
-            '[dsQry."NOME"]')
+            '[dsQry."NOMEFORNECEDOR"]')
           ParentFont = False
         end
         object Memo41: TfrxMemoView
           AllowVectorExport = True
           Left = 7.559060000000000000
-          Top = 3.779530000000000000
-          Width = 71.811070000000000000
-          Height = 18.897650000000000000
+          Width = 98.267780000000000000
+          Height = 15.118120000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -739,10 +819,9 @@ object frmPainelCompras: TfrmPainelCompras
         end
         object Memo42: TfrxMemoView
           AllowVectorExport = True
-          Left = 81.826840000000000000
-          Top = 3.779530000000000000
-          Width = 90.708720000000000000
-          Height = 18.897650000000000000
+          Left = 110.826840000000000000
+          Width = 102.047310000000000000
+          Height = 15.118120000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -756,9 +835,9 @@ object frmPainelCompras: TfrmPainelCompras
         object Memo43: TfrxMemoView
           AllowVectorExport = True
           Left = 7.779530000000000000
-          Top = 45.574830000000000000
-          Width = 105.826840000000000000
-          Height = 18.897650000000000000
+          Top = 37.795300000000000000
+          Width = 132.283550000000000000
+          Height = 15.118120000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -772,8 +851,8 @@ object frmPainelCompras: TfrmPainelCompras
         object Memo44: TfrxMemoView
           AllowVectorExport = True
           Left = 7.559060000000000000
-          Top = 82.370130000000000000
-          Width = 79.370130000000000000
+          Top = 71.590600000000000000
+          Width = 105.826840000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -788,9 +867,9 @@ object frmPainelCompras: TfrmPainelCompras
         object Memo45: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 88.826840000000000000
-          Top = 101.488250000000000000
-          Width = 86.929190000000000000
+          Left = 117.826840000000000000
+          Top = 94.708720000000000000
+          Width = 98.267780000000000000
           Height = 18.897650000000000000
           DataField = 'VRPAGO'
           DataSet = dsQry
@@ -807,9 +886,9 @@ object frmPainelCompras: TfrmPainelCompras
         end
         object Memo46: TfrxMemoView
           AllowVectorExport = True
-          Left = 89.606370000000000000
-          Top = 81.590600000000000000
-          Width = 86.929190000000000000
+          Left = 118.606370000000000000
+          Top = 72.811070000000000000
+          Width = 98.267780000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -821,20 +900,42 @@ object frmPainelCompras: TfrmPainelCompras
             'VALOR PAGO')
           ParentFont = False
         end
-        object Line1: TfrxLineView
+        object Memo1: TfrxMemoView
           AllowVectorExport = True
-          Left = 3.779530000000000000
-          Top = 124.724490000000000000
-          Width = 177.637910000000000000
+          Left = 7.559060000000000000
+          Top = 114.165430000000000000
+          Width = 102.047310000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'ARial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'REFERENTE A:')
+          ParentFont = False
+        end
+        object Line2: TfrxLineView
+          AllowVectorExport = True
+          Left = 226.771800000000000000
+          Top = 22.677180000000000000
+          Height = 105.826840000000000000
           Color = clBlack
           Frame.Typ = []
           Diagonal = True
         end
-        object Line2: TfrxLineView
+      end
+      object GroupFooter1: TfrxGroupFooter
+        FillType = ftBrush
+        Frame.Typ = []
+        Height = 7.559060000000000000
+        Top = 215.433210000000000000
+        Width = 718.110700000000000000
+        object Line1: TfrxLineView
           AllowVectorExport = True
-          Left = 181.417440000000000000
-          Top = 124.724490000000000000
-          Height = -124.724490000000000000
+          Left = 199.196970000000000000
+          Width = -177.637910000000000000
           Color = clBlack
           Frame.Typ = []
           Diagonal = True
@@ -863,8 +964,20 @@ object frmPainelCompras: TfrmPainelCompras
       item
         DataSet = dsQry
         DataSetName = 'dsQry'
+      end
+      item
+        DataSet = dsSumario
+        DataSetName = 'dsSumario'
       end>
-    Variables = <>
+    Variables = <
+      item
+        Name = ' FUNCOES'
+        Value = Null
+      end
+      item
+        Name = 'FILTROS'
+        Value = ''
+      end>
     Style = <>
     object Data: TfrxDataPage
       Height = 1000.000000000000000000
@@ -877,136 +990,75 @@ object frmPainelCompras: TfrmPainelCompras
       LeftMargin = 10.000000000000000000
       RightMargin = 10.000000000000000000
       TopMargin = 10.000000000000000000
-      BottomMargin = 10.000000000000000000
       Frame.Typ = []
       MirrorMode = []
       object MasterData1: TfrxMasterData
         FillType = ftBrush
         Frame.Typ = []
-        Height = 26.456710000000000000
-        Top = 64.252010000000000000
+        Height = 20.677180000000000000
+        Top = 268.346630000000000000
         Width = 718.110700000000000000
         DataSet = dsQry
         DataSetName = 'dsQry'
         RowCount = 0
-        object Memo1: TfrxMemoView
+        object Memo11: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 5.559060000000000000
-          Top = 4.000000000000000000
-          Width = 71.811070000000000000
-          Height = 18.897650000000000000
-          DataField = 'ID'
+          Left = 68.031540000000000000
+          Top = 1.779530000000000000
+          Width = 230.551330000000000000
+          Height = 15.118120000000000000
           DataSet = dsQry
           DataSetName = 'dsQry'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'ArIal'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[dsQry."ID"]')
-          ParentFont = False
-        end
-        object dsQryDATA: TfrxMemoView
-          IndexTag = 1
-          AllowVectorExport = True
-          Left = 83.149660000000000000
-          Top = 3.779530000000000000
-          Width = 86.929190000000000000
-          Height = 18.897650000000000000
-          DataField = 'DATA'
-          DataSet = dsQry
-          DataSetName = 'dsQry'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'ArIal'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[dsQry."DATA"]')
-          ParentFont = False
-        end
-        object dsQryVALORDACOMPRA: TfrxMemoView
-          IndexTag = 1
-          AllowVectorExport = True
-          Left = 430.866420000000000000
-          Top = 4.000000000000000000
-          Width = 79.370130000000000000
-          Height = 18.897650000000000000
-          DataField = 'VALORDACOMPRA'
-          DataSet = dsQry
-          DataSetName = 'dsQry'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ARial'
           Font.Style = []
           Frame.Typ = []
           Memo.UTF8W = (
-            '[dsQry."VALORDACOMPRA"]')
+            '[dsQry."NOMEITEM"]')
           ParentFont = False
         end
-        object dsQryNOME: TfrxMemoView
+        object Memo13: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 176.858380000000000000
-          Top = 3.779530000000000000
-          Width = 151.181200000000000000
-          Height = 18.897650000000000000
-          DataField = 'NOME'
+          Left = 306.141930000000000000
+          Top = 1.779530000000000000
+          Width = 124.724490000000000000
+          Height = 15.118120000000000000
           DataSet = dsQry
           DataSetName = 'dsQry'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'ArIal'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[dsQry."NOME"]')
-          ParentFont = False
-        end
-        object dsQryVRPAGO: TfrxMemoView
-          IndexTag = 1
-          AllowVectorExport = True
-          Left = 516.795610000000000000
-          Top = 4.220470000000000000
-          Width = 75.590600000000000000
-          Height = 18.897650000000000000
-          DataField = 'VRPAGO'
-          DataSet = dsQry
-          DataSetName = 'dsQry'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ARial'
           Font.Style = []
           Frame.Typ = []
           Memo.UTF8W = (
-            '[dsQry."VRPAGO"]')
+            '[dsQry."QTUNIDADECOMPRADA"] [dsQry."UNIDADEMEDIDA"]')
           ParentFont = False
         end
-        object dsQryTELEFONE: TfrxMemoView
+        object Memo15: TfrxMemoView
           IndexTag = 1
           AllowVectorExport = True
-          Left = 332.803340000000000000
-          Top = 3.779530000000000000
-          Width = 94.488250000000000000
-          Height = 18.897650000000000000
-          DataField = 'TELEFONE'
+          Left = 434.645950000000000000
+          Top = 2.000000000000000000
+          Width = 124.724490000000000000
+          Height = 15.118120000000000000
           DataSet = dsQry
           DataSetName = 'dsQry'
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2m'
+          DisplayFormat.Kind = fkNumeric
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Arial'
+          Font.Height = -12
+          Font.Name = 'ARial'
           Font.Style = []
           Frame.Typ = []
           Memo.UTF8W = (
-            '[dsQry."TELEFONE"]')
+            '[dsQry."VRTOTALITEM"]')
           ParentFont = False
         end
       end
@@ -1014,24 +1066,8 @@ object frmPainelCompras: TfrmPainelCompras
         FillType = ftBrush
         Frame.Typ = []
         Height = 83.149660000000000000
-        Top = 113.385900000000000000
+        Top = 313.700990000000000000
         Width = 718.110700000000000000
-        object SysMemo1: TfrxSysMemoView
-          AllowVectorExport = True
-          Left = 619.842920000000000000
-          Top = 32.456710000000000000
-          Width = 86.929190000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'ARial'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[SUM(<dsQry."VALORDACOMPRA">,MasterData1)]')
-          ParentFont = False
-        end
         object Memo7: TfrxMemoView
           AllowVectorExport = True
           Left = 487.559370000000000000
@@ -1046,22 +1082,6 @@ object frmPainelCompras: TfrmPainelCompras
           Frame.Typ = []
           Memo.UTF8W = (
             'VALOR DAS COMPRAS:')
-          ParentFont = False
-        end
-        object SysMemo2: TfrxSysMemoView
-          AllowVectorExport = True
-          Left = 619.842920000000000000
-          Top = 55.133890000000000000
-          Width = 86.929190000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'ARial'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[SUM(<dsQry."VRPAGO">,MasterData1)]')
           ParentFont = False
         end
         object Memo8: TfrxMemoView
@@ -1080,22 +1100,6 @@ object frmPainelCompras: TfrmPainelCompras
             'VALOR PAGO:')
           ParentFont = False
         end
-        object SysMemo3: TfrxSysMemoView
-          AllowVectorExport = True
-          Left = 616.063390000000000000
-          Top = 9.779530000000000000
-          Width = 94.488250000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'ARial'
-          Font.Style = []
-          Frame.Typ = []
-          Memo.UTF8W = (
-            '[COUNT(MasterData1)]')
-          ParentFont = False
-        end
         object Memo9: TfrxMemoView
           AllowVectorExport = True
           Left = 461.102660000000000000
@@ -1112,12 +1116,75 @@ object frmPainelCompras: TfrmPainelCompras
             'QUANTIDADE DE COMPRAS:')
           ParentFont = False
         end
+        object Memo12: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 619.842920000000000000
+          Top = 32.015770000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2m'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'ARial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsSumario."VALORCOMPRAS"]')
+          ParentFont = False
+        end
+        object Memo14: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 620.063390000000000000
+          Top = 53.913420000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2m'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'ARial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsSumario."VRPAGOTOTAL"]')
+          ParentFont = False
+        end
+        object Memo21: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 619.842920000000000000
+          Top = 9.559060000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'ARial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsSumario."QT"]')
+          ParentFont = False
+        end
       end
       object Header1: TfrxHeader
         FillType = ftBrush
         Frame.Typ = []
         Height = 22.677180000000000000
-        Top = 18.897650000000000000
+        Top = 162.519790000000000000
         Width = 718.110700000000000000
         object Memo2: TfrxMemoView
           AllowVectorExport = True
@@ -1127,7 +1194,7 @@ object frmPainelCompras: TfrmPainelCompras
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ArIal'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -1143,7 +1210,7 @@ object frmPainelCompras: TfrmPainelCompras
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ArIal'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -1159,7 +1226,7 @@ object frmPainelCompras: TfrmPainelCompras
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ArIal'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -1169,13 +1236,13 @@ object frmPainelCompras: TfrmPainelCompras
         end
         object Memo5: TfrxMemoView
           AllowVectorExport = True
-          Left = 430.866420000000000000
+          Left = 494.866420000000000000
           Top = 3.000000000000000000
-          Width = 79.370130000000000000
+          Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ARial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -1185,13 +1252,13 @@ object frmPainelCompras: TfrmPainelCompras
         end
         object Memo6: TfrxMemoView
           AllowVectorExport = True
-          Left = 513.795610000000000000
+          Left = 596.693260000000000000
           Top = 3.000000000000000000
-          Width = 79.370130000000000000
+          Width = 86.929190000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ARial'
           Font.Style = [fsBold]
           Frame.Typ = []
@@ -1201,18 +1268,299 @@ object frmPainelCompras: TfrmPainelCompras
         end
         object Memo10: TfrxMemoView
           AllowVectorExport = True
-          Left = 332.803340000000000000
+          Left = 363.803340000000000000
           Top = 3.779530000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -11
+          Font.Height = -12
           Font.Name = 'ArIal'
           Font.Style = [fsBold]
           Frame.Typ = []
           Memo.UTF8W = (
             'TELEFONE')
+          ParentFont = False
+        end
+      end
+      object GroupHeader1: TfrxGroupHeader
+        FillType = ftBrush
+        Frame.Typ = []
+        Height = 37.795300000000000000
+        Top = 207.874150000000000000
+        Width = 718.110700000000000000
+        Condition = 'dsQry."ID"'
+        object Shape1: TfrxShapeView
+          AllowVectorExport = True
+          Left = 2.747990000000000000
+          Width = 706.772110000000000000
+          Height = 18.897635350000000000
+          Fill.BackColor = 14211288
+          Frame.Color = clNone
+          Frame.Style = fsDot
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Frame.Width = 0.100000000000000000
+        end
+        object Memo1: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 5.559060000000000000
+          Top = 0.220470000000000000
+          Width = 71.811070000000000000
+          Height = 15.118120000000000000
+          DataField = 'ID'
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ArIal'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."ID"]')
+          ParentFont = False
+        end
+        object dsQryDATA: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 83.149660000000000000
+          Width = 86.929190000000000000
+          Height = 15.118120000000000000
+          DataField = 'DATA'
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ArIal'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."DATA"]')
+          ParentFont = False
+        end
+        object dsQryVALORDACOMPRA: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 494.866420000000000000
+          Top = 0.220470000000000000
+          Width = 94.488250000000000000
+          Height = 15.118120000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2m'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ARial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."VALORDACOMPRA"]')
+          ParentFont = False
+        end
+        object dsQryNOME: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 176.858380000000000000
+          Width = 181.417440000000000000
+          Height = 15.118120000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ArIal'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."NOMEFORNECEDOR"]')
+          ParentFont = False
+        end
+        object dsQryVRPAGO: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 599.693260000000000000
+          Top = 0.440940000000000000
+          Width = 83.149660000000000000
+          Height = 15.118120000000000000
+          DataField = 'VRPAGO'
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ARial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."VRPAGO"]')
+          ParentFont = False
+        end
+        object dsQryTELEFONE: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 363.803340000000000000
+          Width = 124.724490000000000000
+          Height = 15.118120000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[dsQry."TELEFONEFORNECEDOR"]')
+          ParentFont = False
+        end
+        object Memo18: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 68.031540000000000000
+          Top = 18.897650000000000000
+          Width = 230.551330000000000000
+          Height = 15.118120000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ARial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'PRODUTO')
+          ParentFont = False
+        end
+        object Memo19: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 306.141930000000000000
+          Top = 18.897650000000000000
+          Width = 124.724490000000000000
+          Height = 15.118120000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ARial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'QNT COMPRADA')
+          ParentFont = False
+        end
+        object Memo20: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 434.645950000000000000
+          Top = 18.897650000000000000
+          Width = 124.724490000000000000
+          Height = 15.118120000000000000
+          DataSet = dsQry
+          DataSetName = 'dsQry'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ARial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'VALOR')
+          ParentFont = False
+        end
+      end
+      object PageHeader1: TfrxPageHeader
+        FillType = ftBrush
+        Frame.Typ = []
+        Height = 83.149660000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Memo16: TfrxMemoView
+          AllowVectorExport = True
+          Left = 222.992270000000000000
+          Top = 3.779530000000000000
+          Width = 253.228510000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -19
+          Font.Name = 'ArIal'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'RELAT'#211'RIO DE COMPRAS')
+          ParentFont = False
+        end
+        object SysMemo2: TfrxSysMemoView
+          AllowVectorExport = True
+          Left = 642.520100000000000000
+          Top = 3.779530000000000000
+          Width = 68.031540000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'ArIal'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'SISTEMA MILK')
+          ParentFont = False
+        end
+        object FILTROS: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 11.338590000000000000
+          Top = 37.795300000000000000
+          Width = 691.653990000000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'FILTROS: [FILTROS]')
+        end
+      end
+      object PageFooter1: TfrxPageFooter
+        FillType = ftBrush
+        Frame.Typ = []
+        Height = 22.677180000000000000
+        Top = 457.323130000000000000
+        Width = 718.110700000000000000
+        object SysMemo1: TfrxSysMemoView
+          AllowVectorExport = True
+          Left = 7.559060000000000000
+          Width = 151.181200000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'ArIal'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'IMPRESSO EM [DATE]')
+          ParentFont = False
+        end
+        object SysMemo4: TfrxSysMemoView
+          AllowVectorExport = True
+          Left = 616.063390000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'ArIal'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[PAGE#] de [TOTALPAGES#]')
           ParentFont = False
         end
       end
@@ -1229,5 +1577,264 @@ object frmPainelCompras: TfrmPainelCompras
       Caption = 'Relat'#243'rio em campos'
       OnClick = Relatrioemcampos1Click
     end
+  end
+  object FDQryRel: TFDQuery
+    Connection = DM.FDConn
+    Transaction = DM.FDTrans
+    UpdateTransaction = DM.FDTrans
+    UpdateOptions.AssignedValues = [uvGeneratorName]
+    UpdateOptions.GeneratorName = 'GEN_COMPRA_ID'
+    UpdateOptions.AutoIncFields = 'ID'
+    SQL.Strings = (
+      
+        'select c.*, v.*, p.*, ic.*, i.nome, i.idunidadedemedida,(ic.vrun' +
+        'idade*ic.qtunidade) as vrtotalitem, u.nome as unidademedida, u.s' +
+        'igla'
+      'from compra c                             '
+      'left join valorcompra v on v.idcompra=c.id'
+      'left join pessoa p on c.idfornecedor=p.id'
+      'left join itemcompra ic on ic.idcompra = c.id'
+      'left join item i on ic.iditem = i.id'
+      'left join unidadedemedida u on u.id=i.idunidadedemedida'
+      'where dtexcluiu is null')
+    Left = 700
+    Top = 138
+    object FDQryRelID: TFDAutoIncField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      IdentityInsert = True
+    end
+    object FDQryRelDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 100
+    end
+    object FDQryRelIDFORNECEDOR: TIntegerField
+      FieldName = 'IDFORNECEDOR'
+      Origin = 'IDFORNECEDOR'
+    end
+    object FDQryRelDATA: TDateField
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+    end
+    object FDQryRelOBS: TStringField
+      FieldName = 'OBS'
+      Origin = 'OBS'
+      Size = 1000
+    end
+    object FDQryRelFLPAGA: TSmallintField
+      FieldName = 'FLPAGA'
+      Origin = 'FLPAGA'
+    end
+    object FDQryRelVRPAGO: TCurrencyField
+      FieldName = 'VRPAGO'
+      Origin = 'VRPAGO'
+    end
+    object FDQryRelDTEXCLUIU: TDateField
+      FieldName = 'DTEXCLUIU'
+      Origin = 'DTEXCLUIU'
+    end
+    object FDQryRelIDCOMPRA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDCOMPRA'
+      Origin = 'IDCOMPRA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelVALORDACOMPRA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALORDACOMPRA'
+      Origin = 'VALORDACOMPRA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object FDQryRelID_1: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_1'
+      Origin = 'ID'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelNOME: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 60
+    end
+    object FDQryRelTELEFONE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'TELEFONE'
+      Origin = 'TELEFONE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 15
+    end
+    object FDQryRelOBS_1: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'OBS_1'
+      Origin = 'OBS'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 1000
+    end
+    object FDQryRelID_2: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'ID_2'
+      Origin = 'ID'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelIDITEM: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDITEM'
+      Origin = 'IDITEM'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelIDCOMPRA_1: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDCOMPRA_1'
+      Origin = 'IDCOMPRA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelVRUNIDADE: TCurrencyField
+      AutoGenerateValue = arDefault
+      FieldName = 'VRUNIDADE'
+      Origin = 'VRUNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelQTUNIDADE: TCurrencyField
+      AutoGenerateValue = arDefault
+      FieldName = 'QTUNIDADE'
+      Origin = 'QTUNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelNOME_1: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'NOME_1'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object FDQryRelIDUNIDADEDEMEDIDA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDUNIDADEDEMEDIDA'
+      Origin = 'IDUNIDADEDEMEDIDA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQryRelUNIDADEMEDIDA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADEMEDIDA'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 50
+    end
+    object FDQryRelVRTOTALITEM: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VRTOTALITEM'
+      Origin = 'VRTOTALITEM'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object FDQryRelSIGLA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'SIGLA'
+      Origin = 'SIGLA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 5
+    end
+  end
+  object dsSumario: TfrxDBDataset
+    UserName = 'dsSumario'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'VRPAGOTOTAL=VRPAGOTOTAL'
+      'VALORCOMPRAS=VALORCOMPRAS'
+      'QT=QT')
+    DataSet = FDQrySumario
+    BCDToCurrency = False
+    Left = 752
+    Top = 80
+  end
+  object FDQrySumario: TFDQuery
+    Connection = DM.FDConn
+    Transaction = DM.FDTrans
+    UpdateTransaction = DM.FDTrans
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate, uvGeneratorName]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      
+        'select sum(c.vrpago) as vrPagoTotal, sum(v.valordacompra) as val' +
+        'orCompras, count(c.id) as qt'
+      'from compra c                             '
+      'left join valorcompra v on v.idcompra=c.id'
+      'where c.dtexcluiu is null')
+    Left = 692
+    Top = 82
+    object FDQrySumarioVRPAGOTOTAL: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VRPAGOTOTAL'
+      Origin = 'VRPAGOTOTAL'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
+    object FDQrySumarioVALORCOMPRAS: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALORCOMPRAS'
+      Origin = 'VALORCOMPRAS'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+    end
+    object FDQrySumarioQT: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'QT'
+      Origin = 'QT'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+  end
+  object frxPDFExport1: TfrxPDFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    OpenAfterExport = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Quality = 95
+    Transparency = False
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
+    PdfA = False
+    PDFStandard = psNone
+    PDFVersion = pv17
+    Left = 240
+    Top = 224
   end
 end

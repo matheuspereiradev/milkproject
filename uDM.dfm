@@ -68,4 +68,9 @@ object DM: TDM
     Left = 24
     Top = 238
   end
+  object QryAux: TFDQuery
+    Connection = FDConn
+    Left = 368
+    Top = 48
+  end
 end

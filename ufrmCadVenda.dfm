@@ -1,14 +1,14 @@
 inherited frmCadVenda: TfrmCadVenda
-  Caption = 'frmCadVenda'
+  Caption = 'Cadastro de vendas'
   ClientHeight = 559
   ClientWidth = 887
-  ExplicitLeft = -19
   ExplicitWidth = 903
   ExplicitHeight = 598
   PixelsPerInch = 96
   TextHeight = 13
   inherited dxRibbon1: TdxRibbon
     Width = 887
+    ExplicitWidth = 887
     inherited dxRibbon1Tab1: TdxRibbonTab
       Index = 0
     end
@@ -17,23 +17,23 @@ inherited frmCadVenda: TfrmCadVenda
     Width = 887
     Height = 437
     Properties.ActivePage = cxTabSheet2
-    ExplicitLeft = 0
-    ExplicitTop = 122
-    ExplicitWidth = 675
-    ExplicitHeight = 357
+    ExplicitWidth = 887
+    ExplicitHeight = 437
     ClientRectBottom = 433
     ClientRectRight = 883
     inherited cxTabSheet1: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 4
-      ExplicitWidth = 667
-      ExplicitHeight = 349
+      ExplicitWidth = 879
+      ExplicitHeight = 429
       inherited cxGrid: TcxGrid
         Width = 879
         Height = 429
-        ExplicitWidth = 667
-        ExplicitHeight = 349
+        ExplicitWidth = 879
+        ExplicitHeight = 429
         inherited cxGridDBTableView1: TcxGridDBTableView
+          OnCellDblClick = cxGridDBTableView1CellDblClick
+          OnSelectionChanged = cxGridDBTableView1SelectionChanged
           DataController.DataSource = dts
           object cxGridDBTableView1ID: TcxGridDBColumn
             Caption = 'C'#211'D'
@@ -44,11 +44,18 @@ inherited frmCadVenda: TfrmCadVenda
             Width = 73
           end
           object cxGridDBTableView1FLPAGA: TcxGridDBColumn
+            Caption = 'QUITADA'
             DataBinding.FieldName = 'FLPAGA'
             PropertiesClassName = 'TcxCheckBoxProperties'
             Properties.Alignment = taRightJustify
             Properties.ValueChecked = '1'
             Properties.ValueUnchecked = '0'
+          end
+          object cxGridDBTableView1VALORDAVENDA: TcxGridDBColumn
+            DataBinding.FieldName = 'VALORDAVENDA'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.DisplayFormat = 'R$ ###,###,##0.00'
+            Width = 92
           end
           object cxGridDBTableView1VRPAGO: TcxGridDBColumn
             Caption = 'VALOR PAGO'
@@ -59,7 +66,7 @@ inherited frmCadVenda: TfrmCadVenda
           end
           object cxGridDBTableView1NOME: TcxGridDBColumn
             DataBinding.FieldName = 'NOME'
-            Width = 275
+            Width = 260
           end
           object cxGridDBTableView1TELEFONE: TcxGridDBColumn
             DataBinding.FieldName = 'TELEFONE'
@@ -71,14 +78,13 @@ inherited frmCadVenda: TfrmCadVenda
     inherited cxTabSheet2: TcxTabSheet
       ExplicitLeft = 4
       ExplicitTop = 4
-      ExplicitWidth = 667
-      ExplicitHeight = 349
+      ExplicitWidth = 879
+      ExplicitHeight = 429
       object cxGroupBox1: TcxGroupBox
         Left = 0
         Top = 0
         Align = alLeft
         Alignment = alCenterCenter
-        Anchors = [akLeft, akBottom]
         Style.BorderStyle = ebsOffice11
         Style.Edges = [bLeft, bTop, bRight, bBottom]
         Style.LookAndFeel.Kind = lfStandard
@@ -92,7 +98,7 @@ inherited frmCadVenda: TfrmCadVenda
         StyleDisabled.LookAndFeel.SkinName = 'MySkin_Office2019Colorful'
         TabOrder = 0
         Height = 429
-        Width = 321
+        Width = 320
         object Label1: TLabel
           Left = 19
           Top = 16
@@ -127,9 +133,9 @@ inherited frmCadVenda: TfrmCadVenda
         object Label5: TLabel
           Left = 144
           Top = 80
-          Width = 41
+          Width = 65
           Height = 13
-          Caption = 'VRPAGO'
+          Caption = 'COMPRADOR'
           FocusControl = cxDBCurrencyEdit1
         end
         object cxDBSpinEdit1: TcxDBSpinEdit
@@ -196,7 +202,7 @@ inherited frmCadVenda: TfrmCadVenda
           Style.IsFontAssigned = True
         end
       end
-      object cxGroupBox2: TcxGroupBox
+      object gbProdutos: TcxGroupBox
         Left = 320
         Top = 0
         Align = alRight
@@ -224,9 +230,6 @@ inherited frmCadVenda: TfrmCadVenda
           Style.LookAndFeel.NativeStyle = True
           StyleDisabled.LookAndFeel.NativeStyle = True
           TabOrder = 0
-          ExplicitLeft = 16
-          ExplicitTop = 3
-          ExplicitWidth = 185
           Height = 105
           Width = 549
           object cbProduto: TcxLookupComboBox
@@ -253,6 +256,7 @@ inherited frmCadVenda: TfrmCadVenda
             LookAndFeel.Kind = lfOffice11
             LookAndFeel.NativeStyle = False
             TabOrder = 1
+            OnClick = cxButton1Click
           end
           object cxLabel1: TcxLabel
             Left = 8
@@ -312,10 +316,6 @@ inherited frmCadVenda: TfrmCadVenda
           Align = alClient
           TabOrder = 1
           LookAndFeel.NativeStyle = True
-          ExplicitLeft = 224
-          ExplicitTop = 192
-          ExplicitWidth = 250
-          ExplicitHeight = 200
           object cxGrid1DBTableView1: TcxGridDBTableView
             Navigator.Buttons.CustomButtons = <>
             DataController.DataSource = dtsProdutoVenda
@@ -324,24 +324,74 @@ inherited frmCadVenda: TfrmCadVenda
             DataController.Summary.SummaryGroups = <>
             object cxGrid1DBTableView1ID: TcxGridDBColumn
               DataBinding.FieldName = 'ID'
+              Options.Editing = False
               Width = 60
             end
             object cxGrid1DBTableView1NOME: TcxGridDBColumn
               DataBinding.FieldName = 'NOME'
-              Width = 238
+              Options.Editing = False
+              Width = 174
             end
             object cxGrid1DBTableView1VRUNIDADE: TcxGridDBColumn
               Caption = 'VR UNIDADE'
               DataBinding.FieldName = 'VRUNIDADE'
+              Options.Editing = False
               Width = 81
             end
             object cxGrid1DBTableView1QUANTIDADE: TcxGridDBColumn
               DataBinding.FieldName = 'QUANTIDADE'
+              Options.Editing = False
               Width = 79
             end
             object cxGrid1DBTableView1VALORTOTAL: TcxGridDBColumn
               DataBinding.FieldName = 'VALORTOTAL'
-              Width = 95
+              PropertiesClassName = 'TcxCurrencyEditProperties'
+              Options.Editing = False
+              Width = 73
+            end
+            object cxGrid1DBTableView1Column1: TcxGridDBColumn
+              Caption = 'EXCLUIR'
+              PropertiesClassName = 'TcxButtonEditProperties'
+              Properties.Buttons = <
+                item
+                  Default = True
+                  Glyph.SourceDPI = 96
+                  Glyph.Data = {
+                    89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+                    610000001974455874536F6674776172650041646F626520496D616765526561
+                    647971C9653C0000000C744558745469746C650054726173683B649A356D0000
+                    024249444154785E75924F6BD44018C69FD9CC36E976975D28A52DDA562DB1C5
+                    2FE021C52FE04128C52A28BD7810912E5814113D78F0E4A907BD0852C4434FF5
+                    50B4071145DB83081E2C45BBBBAD8AF51F8B6CDBD5CD6EE69F99A181B0A40F09
+                    79923CEFF07BDF19AA94429BC8D9A96B6FFA7ABB3DC7B10128B45A0C3F7E5657
+                    E61FDD1D439B28122484F06AB5DDD9B907776E025053176EDC9652CE2041D475
+                    5D63CAE532C6CF14970921DED0E14184CFE2E973578A1A7060E8204252FD5FE3
+                    AE2CCCCF8EE9BA38013935397DFFD8E8B037E21E427F5F0F0AF91CD21D142CE0
+                    A8FFFD87ED9D3A46DD419437BE7961F61E80CB9A8EEA62002925E5C542EF01EC
+                    0629A4EB01489AC39104CD264775BB893FB526FC264177FF004AA5CD4B00A601
+                    C888C0924262F9C54B8D0E4A2DA42905491128A9C03807E7C2B4111BBA151118
+                    ADAF3ECF1F3F31BE3331711241AB85ADEFBF313A321C12F82855BEE2A87B04BE
+                    DFC0D2D22BBC7DBD5068DF05012050522293C982520A100BD95C0E969582440A
+                    99AE2C0801A410D0598D1F23302F4C2A820EDB41486E2663DBB62E306D394E67
+                    E83974265A2022507BDB2826CFCF98FE95A4900A86C40A6F2194FEAE7D442012
+                    0F92101C003197E01ACA583D40E3A24C5C541FA04882F3A8084CA3EF2DC6431F
+                    CF542A15E3955271021D94918D500D03E73C2193D402E7D50FAB6B3D9D8E6D82
+                    1B9B9FC1183733F8F8691D8D860FC1D9D6BE0B1025E79E3E59BCDA95CDA090CF
+                    E3D7970A1817085A0C6BEFDF210818A8957EBC2FC1B3C587D701DC8A9D0D2BC1
+                    33C4F41F3E8F1596C01C0CF00000000049454E44AE426082}
+                  Kind = bkGlyph
+                end>
+              Properties.ViewStyle = vsButtonsAutoWidth
+              Properties.OnButtonClick = cxGrid1DBTableView1Column1PropertiesButtonClick
+              Options.Filtering = False
+              Options.FilteringWithFindPanel = False
+              Options.FilteringAddValueItems = False
+              Options.FilteringFilteredItemsList = False
+              Options.FilteringMRUItemsList = False
+              Options.FilteringPopup = False
+              Options.FilteringPopupMultiSelect = False
+              Options.ShowEditButtons = isebAlways
+              Options.Moving = False
             end
           end
           object cxGrid1Level1: TcxGridLevel
@@ -382,7 +432,8 @@ inherited frmCadVenda: TfrmCadVenda
     SQL.Strings = (
       'select *                                  '
       'from venda v'
-      'inner join pessoa P on P.id = v.idcomprador')
+      'inner join pessoa P on P.id = v.idcomprador'
+      'left join VALORVENDA vl on v.id = vl.idvenda')
     Left = 356
     Top = 274
     object FDQueryID: TFDAutoIncField
@@ -442,6 +493,21 @@ inherited frmCadVenda: TfrmCadVenda
       ProviderFlags = []
       ReadOnly = True
       Size = 1000
+    end
+    object FDQueryIDVENDA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDVENDA'
+      Origin = 'IDVENDA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQueryVALORDAVENDA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALORDAVENDA'
+      Origin = 'VALORDAVENDA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
     end
   end
   object FDQFornecedor: TFDQuery
@@ -535,8 +601,8 @@ inherited frmCadVenda: TfrmCadVenda
     SQL.Strings = (
       
         'select i.id, i.nome, v.vrunidade, v.qtunidade||'#39' - '#39'||u.sigla AS' +
-        ' quantidade, v.id as idItemCompra, v.vrunidade * v.qtunidade as ' +
-        'valorTotal'
+        ' quantidade, v.id as idItemVenda, v.vrunidade * v.qtunidade as v' +
+        'alorTotal'
       'from item i'
       'inner join itemvenda v on v.iditem = i.id'
       'inner join unidadedemedida u on i.idunidadedemedida = u.id'
@@ -575,13 +641,6 @@ inherited frmCadVenda: TfrmCadVenda
       ProviderFlags = []
       ReadOnly = True
     end
-    object FDQProdutosVendaIDITEMCOMPRA: TIntegerField
-      AutoGenerateValue = arDefault
-      FieldName = 'IDITEMCOMPRA'
-      Origin = 'ID'
-      ProviderFlags = []
-      ReadOnly = True
-    end
     object FDQProdutosVendaVALORTOTAL: TBCDField
       AutoGenerateValue = arDefault
       FieldName = 'VALORTOTAL'
@@ -590,11 +649,83 @@ inherited frmCadVenda: TfrmCadVenda
       ReadOnly = True
       Precision = 18
     end
+    object FDQProdutosVendaIDITEMVENDA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDITEMVENDA'
+      Origin = 'ID'
+      ProviderFlags = []
+      ReadOnly = True
+    end
   end
   object dtsProdutoVenda: TDataSource
     DataSet = FDQProdutosVenda
     OnStateChange = dtsStateChange
     Left = 424
     Top = 426
+  end
+  object FDPInsereItem: TFDStoredProc
+    Connection = DM.FDConn
+    StoredProcName = 'INSEREITEMVENDA'
+    Left = 112
+    Top = 326
+    ParamData = <
+      item
+        Position = 1
+        Name = 'IDITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 2
+        Name = 'IDVENDA'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = 'VRUNIDADE'
+        DataType = ftFMTBcd
+        Precision = 15
+        NumericScale = 2
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = 'QTUNIDADE'
+        DataType = ftFMTBcd
+        Precision = 15
+        NumericScale = 2
+        ParamType = ptInput
+      end>
+  end
+  object FDPRemoveItem: TFDStoredProc
+    Connection = DM.FDConn
+    StoredProcName = 'REMOVEITEMVENDA'
+    Left = 200
+    Top = 366
+    ParamData = <
+      item
+        Position = 1
+        Name = 'IDITEMVENDA'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object FDQTotal: TFDQuery
+    Connection = DM.FDConn
+    SQL.Strings = (
+      'select i.idvenda, sum(i.vrunidade*i.qtunidade) as valor'
+      'from itemvenda i'
+      'where i.idvenda = :idvenda'
+      'group by i.idvenda')
+    Left = 284
+    Top = 238
+    ParamData = <
+      item
+        Name = 'IDVENDA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
   end
 end

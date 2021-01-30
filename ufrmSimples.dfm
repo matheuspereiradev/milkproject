@@ -140,7 +140,7 @@ object frmSimples: TfrmSimples
       ItemLinks = <
         item
           Visible = True
-          ItemName = 'cxBarEditItem2'
+          ItemName = 'cxPesquisa'
         end
         item
           Visible = True
@@ -215,7 +215,7 @@ object frmSimples: TfrmSimples
           Kind = bkEllipsis
         end>
     end
-    object cxBarEditItem2: TcxBarEditItem
+    object cxPesquisa: TcxBarEditItem
       Caption = 'Pesquisar por'
       Category = 0
       Hint = 'Pesquisar por'
@@ -232,6 +232,7 @@ object frmSimples: TfrmSimples
       Visible = ivAlways
       Width = 250
       PropertiesClassName = 'TcxTextEditProperties'
+      InternalEditValue = ''
     end
     object dxBarButton1: TdxBarButton
       Caption = 'New Button'

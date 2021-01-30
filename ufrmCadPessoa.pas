@@ -15,7 +15,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, System.ImageList, Vcl.ImgList,
   cxImageList, dxSkinsForm, dxBar, cxBarEditItem, cxClasses, cxGridLevel,
   cxGridCustomView, cxGrid, cxPC, dxRibbon, cxContainer, cxDBEdit, cxMaskEdit,
-  cxSpinEdit, Vcl.StdCtrls;
+  cxSpinEdit, Vcl.StdCtrls, dxSkinsCore, dxSkinProject1;
 
 type
   TfrmCadPessoa = class(TfrmCadBase)
@@ -54,6 +54,14 @@ procedure TfrmCadPessoa.MontaQry;
 begin
   inherited;
   FDQuery.close;
+  with FDQuery.SQL do
+  begin
+    clear;
+    add('SELECT * FROM PESSOA');
+    if (cxPesquisa.EditValue = 'NOME') and (pesquisar.EditValue <> '') then
+      add('where nome like '+QuotedStr('%'+pesquisar.EditValue+'%'));
+    add('order by id desc')
+  end;
   FDQuery.Open;
 end;
 

@@ -16,9 +16,7 @@ inherited frmCadProduto: TfrmCadProduto
   inherited pc: TcxPageControl
     Width = 729
     Height = 401
-    TabOrder = 1
-    ExplicitLeft = 0
-    ExplicitTop = 122
+    Properties.ActivePage = cxTabSheet2
     ExplicitWidth = 729
     ExplicitHeight = 401
     ClientRectBottom = 397
@@ -47,10 +45,6 @@ inherited frmCadProduto: TfrmCadProduto
             DataBinding.FieldName = 'VALORDOPRODUTO'
             Width = 95
           end
-          object cxGridDBTableView1QUANTIDADE: TcxGridDBColumn
-            DataBinding.FieldName = 'QUANTIDADE'
-            Width = 100
-          end
           object cxGridDBTableView1NOMEUM: TcxGridDBColumn
             Caption = 'UNIDADE DE MEDIDA'
             DataBinding.FieldName = 'NOMEUM'
@@ -60,8 +54,8 @@ inherited frmCadProduto: TfrmCadProduto
       end
     end
     inherited cxTabSheet2: TcxTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
+      ExplicitLeft = 4
+      ExplicitTop = 4
       ExplicitWidth = 721
       ExplicitHeight = 393
       object Label1: TLabel
@@ -88,14 +82,6 @@ inherited frmCadProduto: TfrmCadProduto
         Caption = 'VALOR DO PRODUTO'
         FocusControl = cxDBCurrencyEdit1
       end
-      object Label4: TLabel
-        Left = 20
-        Top = 104
-        Width = 66
-        Height = 13
-        Caption = 'QUANTIDADE'
-        FocusControl = cxDBTextEdit2
-      end
       object Label5: TLabel
         Left = 155
         Top = 104
@@ -104,7 +90,7 @@ inherited frmCadProduto: TfrmCadProduto
         Caption = 'UNIDADE DE MEDIDA'
       end
       object Label6: TLabel
-        Left = 536
+        Left = 20
         Top = 104
         Width = 38
         Height = 13
@@ -136,14 +122,6 @@ inherited frmCadProduto: TfrmCadProduto
         TabOrder = 2
         Width = 137
       end
-      object cxDBTextEdit2: TcxDBTextEdit
-        Left = 20
-        Top = 120
-        DataBinding.DataField = 'QUANTIDADE'
-        DataBinding.DataSource = dts
-        TabOrder = 3
-        Width = 121
-      end
       object cxDBLookupComboBox1: TcxDBLookupComboBox
         Left = 155
         Top = 120
@@ -155,11 +133,11 @@ inherited frmCadProduto: TfrmCadProduto
             FieldName = 'NOME'
           end>
         Properties.ListSource = dtsUnidadeMedida
-        TabOrder = 4
+        TabOrder = 3
         Width = 366
       end
       object cxDBCheckBox1: TcxDBCheckBox
-        Left = 536
+        Left = 20
         Top = 117
         Caption = 'ATIVO'
         DataBinding.DataField = 'STATUS'
@@ -178,7 +156,7 @@ inherited frmCadProduto: TfrmCadProduto
         Style.Font.Name = 'Tahoma'
         Style.Font.Style = []
         Style.IsFontAssigned = True
-        TabOrder = 5
+        TabOrder = 4
       end
     end
   end
@@ -186,6 +164,18 @@ inherited frmCadProduto: TfrmCadProduto
     Left = 648
     Top = 96
     PixelsPerInch = 96
+    inherited barBasicos: TdxBar
+      DockedDockControl = nil
+      DockedDockingStyle = dsNone
+    end
+    inherited barAcoes: TdxBar
+      DockedDockControl = nil
+      DockedDockingStyle = dsNone
+    end
+    inherited barPESQ: TdxBar
+      DockedDockControl = nil
+      DockedDockingStyle = dsNone
+    end
     inherited btnAdc: TdxBarLargeButton
       ImageIndex = 0
     end

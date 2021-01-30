@@ -16,7 +16,7 @@ uses
   cxImageList, dxSkinsForm, dxBar, cxBarEditItem, cxClasses, cxGridLevel,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGrid, cxPC, dxRibbon, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  cxCheckBox;
+  cxCheckBox, dxSkinsCore, dxSkinProject1;
 
 type
   TfrmCadProduto = class(TfrmCadBase)
@@ -37,8 +37,6 @@ type
     cxDBTextEdit1: TcxDBTextEdit;
     Label3: TLabel;
     cxDBCurrencyEdit1: TcxDBCurrencyEdit;
-    Label4: TLabel;
-    cxDBTextEdit2: TcxDBTextEdit;
     cxDBLookupComboBox1: TcxDBLookupComboBox;
     Label5: TLabel;
     cxDBCheckBox1: TcxDBCheckBox;
@@ -49,7 +47,6 @@ type
     cxGridDBTableView1ID: TcxGridDBColumn;
     cxGridDBTableView1NOME: TcxGridDBColumn;
     cxGridDBTableView1VALORDOPRODUTO: TcxGridDBColumn;
-    cxGridDBTableView1QUANTIDADE: TcxGridDBColumn;
     cxGridDBTableView1NOMEUM: TcxGridDBColumn;
   private
     { Private declarations }

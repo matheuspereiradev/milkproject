@@ -23,7 +23,7 @@ uses
 type
   TfrmCadVenda = class(TfrmCadBase)
     cxGroupBox1: TcxGroupBox;
-    cxGroupBox2: TcxGroupBox;
+    gbProdutos: TcxGroupBox;
     FDQueryID: TFDAutoIncField;
     FDQueryDATA: TDateField;
     FDQueryOBS: TStringField;
@@ -81,18 +81,37 @@ type
     FDQProdutosVendaNOME: TStringField;
     FDQProdutosVendaVRUNIDADE: TCurrencyField;
     FDQProdutosVendaQUANTIDADE: TStringField;
-    FDQProdutosVendaIDITEMCOMPRA: TIntegerField;
     FDQProdutosVendaVALORTOTAL: TBCDField;
     cxGrid1DBTableView1ID: TcxGridDBColumn;
     cxGrid1DBTableView1NOME: TcxGridDBColumn;
     cxGrid1DBTableView1VRUNIDADE: TcxGridDBColumn;
     cxGrid1DBTableView1QUANTIDADE: TcxGridDBColumn;
     cxGrid1DBTableView1VALORTOTAL: TcxGridDBColumn;
+    FDPInsereItem: TFDStoredProc;
+    FDPRemoveItem: TFDStoredProc;
+    cxGrid1DBTableView1Column1: TcxGridDBColumn;
+    FDQProdutosVendaIDITEMVENDA: TIntegerField;
+    FDQueryIDVENDA: TIntegerField;
+    FDQueryVALORDAVENDA: TBCDField;
+    cxGridDBTableView1VALORDAVENDA: TcxGridDBColumn;
+    FDQTotal: TFDQuery;
     procedure btnAdcClick(Sender: TObject);
+    procedure dtsStateChange(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
+    procedure cxGrid1DBTableView1Column1PropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure btnEditClick(Sender: TObject);
+    procedure cxGridDBTableView1SelectionChanged(
+      Sender: TcxCustomGridTableView);
+    procedure cxGridDBTableView1CellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure MontaQry; override;
+    procedure AtualizaItens;
+    procedure CalculaTotal;
   end;
 
 var
@@ -102,10 +121,135 @@ implementation
 
 {$R *.dfm}
 
+uses uDM;
+
+procedure TfrmCadVenda.AtualizaItens;
+begin
+  FDQProdutosVenda.Close;
+  FDQProdutosVenda.Params.ClearValues;
+  FDQProdutosVenda.Params.Items[0].Value := FDQueryID.Value;
+  FDQProdutosVenda.Open;
+end;
+
 procedure TfrmCadVenda.btnAdcClick(Sender: TObject);
 begin
   inherited;
   cxDBDateEdit1.Date := Date();
+end;
+
+procedure TfrmCadVenda.btnEditClick(Sender: TObject);
+begin
+  inherited;
+  AtualizaItens;
+  CalculaTotal;
+end;
+
+procedure TfrmCadVenda.CalculaTotal;
+begin
+  FDQTotal.Close;
+  FDQTotal.Params.ClearValues;
+  FDQTotal.Params.Items[0].Value := FDQueryID.Value;
+  FDQTotal.Open;
+
+  lblTotal.Caption:= 'Total: '+ CurrToStr(FDQTotal.FieldByName('VALOR').AsCurrency);
+end;
+
+procedure TfrmCadVenda.cxButton1Click(Sender: TObject);
+begin
+  inherited;
+
+  if edtValor.Value = 0 then
+  begin
+     Application.MessageBox('Digite um valor da venda válido','Milk',MB_ICONEXCLAMATION + MB_OK + MB_SYSTEMMODAL);
+     Abort;
+  end;
+
+  if edtQuantidade.Text = '' then
+  begin
+    Application.MessageBox('Digite uma quantidade válida','Milk',MB_ICONEXCLAMATION + MB_OK + MB_SYSTEMMODAL);
+    Abort;
+  end;
+
+  if cbProduto.EditValue = null then
+  begin
+    Application.MessageBox('Selecione o produto','Milk',MB_ICONEXCLAMATION + MB_OK + MB_SYSTEMMODAL);
+    Abort;
+  end;
+
+
+  FDPInsereItem.Params.ParamByName('IDITEM').Value := cbProduto.EditValue;//cbProduto.ItemObject.;
+  FDPInsereItem.Params.ParamByName('IDVENDA').Value := FDQueryID.Value;
+  FDPInsereItem.Params.ParamByName('VRUNIDADE').Value := edtValor.Value;
+  FDPInsereItem.Params.ParamByName('QTUNIDADE').Value := edtQuantidade.Text;
+  FDPInsereItem.Execute;
+
+  CalculaTotal;
+  AtualizaItens;
+end;
+
+procedure TfrmCadVenda.cxGrid1DBTableView1Column1PropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  inherited;
+  FDPRemoveItem.Params.ParamByName('IDITEMVENDA').Value := FDQProdutosVenda.FieldByName('IDITEMVENDA').AsInteger;
+  FDPRemoveItem.Execute;
+
+  CalculaTotal;
+  AtualizaItens;
+end;
+
+procedure TfrmCadVenda.cxGridDBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  inherited;
+  CalculaTotal;
+end;
+
+procedure TfrmCadVenda.cxGridDBTableView1SelectionChanged(
+  Sender: TcxCustomGridTableView);
+begin
+  inherited;
+  CalculaTotal;
+end;
+
+procedure TfrmCadVenda.dtsStateChange(Sender: TObject);
+begin
+  inherited;
+  if FDQuery.State in [dsInsert] then
+  begin
+     gbProdutos.Visible:=false;
+     lblTotal.Visible:=false;
+  end
+  else
+  begin
+     gbProdutos.Visible:=true;
+     lblTotal.Visible:=true;
+  end;
+
+end;
+
+procedure TfrmCadVenda.MontaQry;
+begin
+  inherited;
+  FDQuery.close;
+
+  with FDQuery.SQL do
+  begin
+    clear;
+    add('select *                                     ');
+    add('from venda v                                 ');
+    add('inner join pessoa P on P.id = v.idcomprador  ');
+    add('left join VALORVENDA vl on v.id = vl.idvenda ');
+  end;
+
+  FDQuery.Open;
+  FDQFornecedor.Close;
+  FDQFornecedor.Open;
+  FDQProdutos.Close;
+  FDQProdutos.open;
+  AtualizaItens;
+  CalculaTotal;
 end;
 
 end.

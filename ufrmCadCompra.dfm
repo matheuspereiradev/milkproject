@@ -40,26 +40,35 @@ inherited frmCadCompra: TfrmCadCompra
           object cxGridDBTableView1ID: TcxGridDBColumn
             DataBinding.FieldName = 'ID'
           end
-          object cxGridDBTableView1DESCRICAO: TcxGridDBColumn
-            DataBinding.FieldName = 'DESCRICAO'
-            Width = 177
-          end
           object cxGridDBTableView1DATA: TcxGridDBColumn
             DataBinding.FieldName = 'DATA'
             Width = 90
           end
+          object cxGridDBTableView1FLPAGA: TcxGridDBColumn
+            Caption = 'QUITADA'
+            DataBinding.FieldName = 'FLPAGA'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.Alignment = taRightJustify
+            Properties.ValueChecked = '1'
+            Properties.ValueUnchecked = '0'
+          end
+          object cxGridDBTableView1VALORDACOMPRA: TcxGridDBColumn
+            Caption = 'VALOR DA COMPRA'
+            DataBinding.FieldName = 'VALORDACOMPRA'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+          end
           object cxGridDBTableView1VRPAGO: TcxGridDBColumn
             Caption = 'VALOR PAGO'
             DataBinding.FieldName = 'VRPAGO'
-            Width = 77
+            Width = 102
           end
           object cxGridDBTableView1NOME: TcxGridDBColumn
             DataBinding.FieldName = 'NOME'
-            Width = 134
+            Width = 141
           end
           object cxGridDBTableView1TELEFONE: TcxGridDBColumn
             DataBinding.FieldName = 'TELEFONE'
-            Width = 121
+            Width = 127
           end
         end
       end
@@ -74,8 +83,6 @@ inherited frmCadCompra: TfrmCadCompra
         Align = alBottom
         Style.BorderStyle = ebsNone
         TabOrder = 0
-        ExplicitLeft = 32
-        ExplicitTop = 432
         Height = 32
         Width = 1031
         object lblTotal: TcxLabel
@@ -110,14 +117,6 @@ inherited frmCadCompra: TfrmCadCompra
           Caption = 'C'#211'D'
           FocusControl = cxDBSpinEdit1
         end
-        object Label2: TLabel
-          Left = 18
-          Top = 185
-          Width = 59
-          Height = 13
-          Caption = 'DESCRICAO'
-          FocusControl = cxDBTextEdit1
-        end
         object Label3: TLabel
           Left = 18
           Top = 126
@@ -128,7 +127,7 @@ inherited frmCadCompra: TfrmCadCompra
         end
         object Label4: TLabel
           Left = 18
-          Top = 230
+          Top = 179
           Width = 20
           Height = 13
           Caption = 'OBS'
@@ -183,7 +182,7 @@ inherited frmCadCompra: TfrmCadCompra
         end
         object cxDBRichEdit1: TcxDBRichEdit
           Left = 18
-          Top = 247
+          Top = 196
           DataBinding.DataField = 'OBS'
           DataBinding.DataSource = dts
           TabOrder = 3
@@ -200,14 +199,6 @@ inherited frmCadCompra: TfrmCadCompra
           Properties.SpinButtons.Visible = False
           TabOrder = 4
           Width = 105
-        end
-        object cxDBTextEdit1: TcxDBTextEdit
-          Left = 18
-          Top = 204
-          DataBinding.DataField = 'DESCRICAO'
-          DataBinding.DataSource = dts
-          TabOrder = 5
-          Width = 367
         end
         object cxLabel4: TcxLabel
           Left = 16
@@ -363,6 +354,7 @@ inherited frmCadCompra: TfrmCadCompra
               end>
             Properties.ListOptions.ShowHeader = False
             Properties.ListSource = dsitem
+            Properties.OnChange = cbProdutoPropertiesChange
             Style.TransparentBorder = True
             TabOrder = 0
             Width = 191
@@ -435,7 +427,7 @@ inherited frmCadCompra: TfrmCadCompra
     Top = 96
     PixelsPerInch = 96
     inherited barPESQ: TdxBar
-      FloatClientWidth = 226
+      FloatClientWidth = 222
       FloatClientHeight = 76
       ItemLinks = <
         item
@@ -467,7 +459,7 @@ inherited frmCadCompra: TfrmCadCompra
       Caption = 'Filtar por'
       Category = 0
       Hint = 'Filtar por'
-      Visible = ivAlways
+      Visible = ivNever
       Width = 150
       Text = 'DESCRI'#199#195'O'
       Items.Strings = (
@@ -491,10 +483,11 @@ inherited frmCadCompra: TfrmCadCompra
     UpdateOptions.GeneratorName = 'GEN_COMPRA_ID'
     UpdateOptions.AutoIncFields = 'ID'
     SQL.Strings = (
-      'select *'
-      'from compra c'
-      'left join pessoa p on c.idfornecedor=p.id'
-      'where dtexcluiu is null')
+      'select *                                   '
+      'from compra c                              '
+      'left join valorcompra v on v.idcompra=c.id '
+      'left join pessoa p on c.idfornecedor=p.id  '
+      'where dtexcluiu is null                    ')
     Left = 356
     object FDQueryID: TIntegerField
       FieldName = 'ID'
@@ -562,6 +555,21 @@ inherited frmCadCompra: TfrmCadCompra
       ProviderFlags = []
       ReadOnly = True
       Size = 1000
+    end
+    object FDQueryIDCOMPRA: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'IDCOMPRA'
+      Origin = 'IDCOMPRA'
+      ProviderFlags = []
+      ReadOnly = True
+    end
+    object FDQueryVALORDACOMPRA: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'VALORDACOMPRA'
+      Origin = 'VALORDACOMPRA'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
     end
   end
   object FDQFornecedor: TFDQuery
@@ -800,5 +808,10 @@ inherited frmCadCompra: TfrmCadCompra
       currency = True
       Precision = 18
     end
+  end
+  object QryAux: TFDQuery
+    Connection = DM.FDConn
+    Left = 220
+    Top = 142
   end
 end

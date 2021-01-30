@@ -13,7 +13,8 @@ uses
   ufrmCadSubAbas in 'ufrmCadSubAbas.pas' {frmCadSubAbas},
   ufrmCadCompra in 'ufrmCadCompra.pas' {frmCadCompra},
   ufrmPainelCompras in 'ufrmPainelCompras.pas' {frmPainelCompras},
-  ufrmCadVenda in 'ufrmCadVenda.pas' {frmCadVenda};
+  ufrmCadVenda in 'ufrmCadVenda.pas' {frmCadVenda},
+  ufrmPainelVendas in 'ufrmPainelVendas.pas' {frmPainelVendas};
 
 {$R *.res}
 
@@ -22,6 +23,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TDM, DM);
-  Application.CreateForm(TfrmCadVenda, frmCadVenda);
   Application.Run;
 end.

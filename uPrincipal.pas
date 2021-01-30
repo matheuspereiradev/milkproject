@@ -22,7 +22,7 @@ uses
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
   dxSkinXmas2008Blue, dxSkinsdxRibbonPainter, dxRibbonCustomizationForm,
   dxSkinsdxBarPainter, cxTextEdit, cxContainer, cxEdit, dxSkinsForm,
-  dxStatusBar, dxRibbonStatusBar, cxLabel, dxGallery, dxGalleryControl,
+  dxStatusBar, dxRibbonStatusBar, cxLabel, dxGallery, dxGalleryControl, shellapi,
   dxRibbonBackstageViewGalleryControl, System.ImageList, Vcl.ImgList, Data.DB,
   Data.Win.ADODB, cxImageList, cxButtonEdit, cxDropDownEdit, dxSkinProject1;
 
@@ -63,6 +63,9 @@ type
     procedure dxBarLargeButton5Click(Sender: TObject);
     procedure dxBarLargeButton8Click(Sender: TObject);
     procedure dxBarLargeButton9Click(Sender: TObject);
+    procedure dxBarLargeButton10Click(Sender: TObject);
+    procedure dxBarLargeButton11Click(Sender: TObject);
+    procedure dxBarLargeButton7Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -77,13 +80,26 @@ implementation
 {$R *.dfm}
 
 uses uDM, ufrmCadProduto,
-  ufrmCadUnidadesDeMedida, ufrmCadPessoa, ufrmCadCompra, ufrmPainelCompras;
+  ufrmCadUnidadesDeMedida, ufrmCadPessoa, ufrmCadCompra, ufrmPainelCompras,
+  ufrmCadVenda, ufrmPainelVendas;
 
 { TForm2 }
 
 
+procedure TfrmPrincipal.dxBarLargeButton10Click(Sender: TObject);
+begin
+    frmCadVenda := TfrmCadVenda.Create(self);
+    frmCadVenda.Show;
+end;
+
+procedure TfrmPrincipal.dxBarLargeButton11Click(Sender: TObject);
+begin
+  frmPainelVendas:=Tfrmpainelvendas.create(self);
+  frmPainelVendas.Show;
+
+end;
+
 procedure TfrmPrincipal.dxBarLargeButton4Click(Sender: TObject);
-//var c: TfrmCadPessoa;
 begin
     frmCadPessoa := TfrmCadPessoa.Create(self);
     frmCadPessoa.Show;
@@ -99,6 +115,13 @@ procedure TfrmPrincipal.dxBarLargeButton6Click(Sender: TObject);
 begin
   frmCadUnidadesDeMedida:=TfrmCadUnidadesDeMedida.Create(self);
   frmCadUnidadesDeMedida.show;
+end;
+
+procedure TfrmPrincipal.dxBarLargeButton7Click(Sender: TObject);
+var sCaminho:string;
+begin
+    sCaminho := 'C:\Program Files (x86)\MILK\AnyDesk.exe';
+    ShellExecute(Handle,'open',pchar(sCaminho),nil,nil,sw_show)
 end;
 
 procedure TfrmPrincipal.dxBarLargeButton8Click(Sender: TObject);
@@ -119,7 +142,7 @@ begin
 
   DM:=TDM.Create(self);
 
-  RBStatus.Panels[0].Text := 'V.: 0.0.1.1';
+  RBStatus.Panels[0].Text := 'V.: 1.0.0.0';
 
   //DM.con.Connected:=true;
 

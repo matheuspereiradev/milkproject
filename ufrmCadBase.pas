@@ -32,6 +32,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure dxBarLargeButton7Click(Sender: TObject);
     procedure dtsStateChange(Sender: TObject);
+    procedure cxGridDBTableView1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -94,6 +95,12 @@ begin
       Dm.FDTrans.CommitRetaining;
 
     montaQry;
+end;
+
+procedure TfrmCadBase.cxGridDBTableView1DblClick(Sender: TObject);
+begin
+  inherited;
+  btnEdit.Click;
 end;
 
 procedure TfrmCadBase.dtsStateChange(Sender: TObject);

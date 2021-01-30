@@ -26,7 +26,7 @@ type
     btnCancel: TdxBarLargeButton;
     dxBarLargeButton6: TdxBarLargeButton;
     cxBarEditItem1: TcxBarEditItem;
-    cxBarEditItem2: TcxBarEditItem;
+    cxPesquisa: TcxBarEditItem;
     pesquisar: TcxBarEditItem;
     dxBarButton1: TdxBarButton;
     dxBarLargeButton7: TdxBarLargeButton;

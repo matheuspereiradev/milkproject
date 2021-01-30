@@ -15,7 +15,7 @@ uses
   FireDAC.Comp.Client, cxButtonEdit, cxCurrencyEdit, Vcl.ComCtrls, dxCore,
   cxDateUtils, cxDropDownEdit, cxCalendar, cxLabel, cxTextEdit, cxMaskEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxSpinEdit, cxRadioGroup,
-  frxClass, frxDBSet, cxCheckBox;
+  frxClass, frxDBSet, cxCheckBox, frxExportBaseDialog, frxExportPDF;
 
 type
   TfrmPainelCompras = class(TForm)
@@ -40,7 +40,6 @@ type
     FDQueryTELEFONE: TStringField;
     FDQueryOBS_1: TStringField;
     cxGrid1DBTableView1ID: TcxGridDBColumn;
-    cxGrid1DBTableView1DESCRICAO: TcxGridDBColumn;
     cxGrid1DBTableView1DATA: TcxGridDBColumn;
     cxGrid1DBTableView1VRPAGO: TcxGridDBColumn;
     cxGrid1DBTableView1VALORDACOMPRA: TcxGridDBColumn;
@@ -76,6 +75,37 @@ type
     Relatrioemlinhas1: TMenuItem;
     Relatrioemcampos1: TMenuItem;
     cxGrid1DBTableView1FLPAGA: TcxGridDBColumn;
+    FDQryRel: TFDQuery;
+    FDQryRelID: TFDAutoIncField;
+    FDQryRelDESCRICAO: TStringField;
+    FDQryRelIDFORNECEDOR: TIntegerField;
+    FDQryRelDATA: TDateField;
+    FDQryRelOBS: TStringField;
+    FDQryRelFLPAGA: TSmallintField;
+    FDQryRelVRPAGO: TCurrencyField;
+    FDQryRelDTEXCLUIU: TDateField;
+    FDQryRelIDCOMPRA: TIntegerField;
+    FDQryRelVALORDACOMPRA: TBCDField;
+    FDQryRelID_1: TIntegerField;
+    FDQryRelNOME: TStringField;
+    FDQryRelTELEFONE: TStringField;
+    FDQryRelOBS_1: TStringField;
+    FDQryRelID_2: TIntegerField;
+    FDQryRelIDITEM: TIntegerField;
+    FDQryRelIDCOMPRA_1: TIntegerField;
+    FDQryRelVRUNIDADE: TCurrencyField;
+    FDQryRelQTUNIDADE: TCurrencyField;
+    FDQryRelNOME_1: TStringField;
+    FDQryRelIDUNIDADEDEMEDIDA: TIntegerField;
+    FDQryRelUNIDADEMEDIDA: TStringField;
+    FDQryRelVRTOTALITEM: TBCDField;
+    dsSumario: TfrxDBDataset;
+    FDQrySumario: TFDQuery;
+    FDQrySumarioVRPAGOTOTAL: TFMTBCDField;
+    FDQrySumarioVALORCOMPRAS: TBCDField;
+    FDQrySumarioQT: TIntegerField;
+    frxPDFExport1: TfrxPDFExport;
+    FDQryRelSIGLA: TStringField;
     procedure cxGrid1DBTableView1Column2PropertiesButtonClick(Sender: TObject;
       AButtonIndex: Integer);
     procedure FormCreate(Sender: TObject);
@@ -86,11 +116,23 @@ type
     procedure cxButton3Click(Sender: TObject);
     procedure Relatrioemlinhas1Click(Sender: TObject);
     procedure Relatrioemcampos1Click(Sender: TObject);
+    procedure rbTodasClick(Sender: TObject);
+    procedure rbPagasClick(Sender: TObject);
+    procedure rbNaoPagasClick(Sender: TObject);
+    procedure dtInicioExit(Sender: TObject);
+    procedure dtFimExit(Sender: TObject);
+    procedure cbFornecedorPropertiesChange(Sender: TObject);
+    procedure edtCodCompraExit(Sender: TObject);
+    procedure cxGrid1DBTableView1CustomDrawCell(Sender: TcxCustomGridTableView;
+      ACanvas: TcxCanvas; AViewInfo: TcxGridTableDataCellViewInfo;
+      var ADone: Boolean);
   private
     { Private declarations }
   public
+    filtros:string;
     procedure MontaQry;
     procedure MontaFornecedores;
+    procedure MontaRelatorio;
   end;
 
 var
@@ -101,6 +143,11 @@ implementation
 {$R *.dfm}
 
 uses ufrmCadCompra;
+
+procedure TfrmPainelCompras.cbFornecedorPropertiesChange(Sender: TObject);
+begin
+montaQry;
+end;
 
 procedure TfrmPainelCompras.cxButton1Click(Sender: TObject);
 begin
@@ -184,6 +231,32 @@ begin
 
 end;
 
+procedure TfrmPainelCompras.cxGrid1DBTableView1CustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+  if AViewInfo.GridRecord.Values[cxGrid1DBTableView1FLPAGA.Index] = 1 then
+  begin
+    ACanvas.Brush.Color := clWebPaleGreen;
+    ACanvas.Font.Color := clGray;
+  end;
+end;
+
+procedure TfrmPainelCompras.dtFimExit(Sender: TObject);
+begin
+montaQry;
+end;
+
+procedure TfrmPainelCompras.dtInicioExit(Sender: TObject);
+begin
+montaQry;
+end;
+
+procedure TfrmPainelCompras.edtCodCompraExit(Sender: TObject);
+begin
+montaQry;
+end;
+
 procedure TfrmPainelCompras.FormCreate(Sender: TObject);
 begin
 
@@ -214,30 +287,137 @@ begin
     add('and c.data  >= '+ QuotedStr(FormatDateTime('dd.MM.yyyy', StrToDate(dtInicio.Text))));
     add('and c.data < '+ QuotedStr(FormatDateTime('dd.MM.yyyy', StrToDate(dtFim.Text)+1)));
 
-
     if edtCodCompra.Text <> '' then
+    begin
       add('and c.id = '+edtCodCompra.Text);
+    end;
+
 
     if cbFornecedor.EditValue > 0 then
-      add('and p.id = '+IntToStr(cbFornecedor.EditValue));
+    begin
+       add('and p.id = '+IntToStr(cbFornecedor.EditValue));
+    end;
 
     if rbPagas.Checked = true then
-      add('and c.flpaga = 1')
+          add('and c.flpaga = 1')
     else if rbNaoPagas .Checked= true then
-      add('and c.flpaga = 0')
-
-
+          add('and c.flpaga = 0')
   end;
   FDQuery.Open;
 end;
 
+procedure TfrmPainelCompras.MontaRelatorio;
+var f:TStringList;
+begin
+
+   FDQrySumario.Close;
+   with  FDQrySumario.SQL do
+   begin
+     clear;
+     add('select sum(c.vrpago) as vrPagoTotal, sum(v.valordacompra) as valorCompras, count(c.id) as qt ');
+     add('from compra c                                                                                ');
+     add('left join valorcompra v on v.idcompra=c.id                                                   ');
+     add('where c.dtexcluiu is null                                                                    ');
+
+     add('and c.data  >= '+ QuotedStr(FormatDateTime('dd.MM.yyyy', StrToDate(dtInicio.Text))));
+     add('and c.data < '+ QuotedStr(FormatDateTime('dd.MM.yyyy', StrToDate(dtFim.Text)+1)));
+
+     if edtCodCompra.Text <> '' then
+       add('and c.id = '+edtCodCompra.Text);
+
+     if cbFornecedor.EditValue > 0 then
+        add('and p.id = '+IntToStr(cbFornecedor.EditValue));
+
+     if rbPagas.Checked = true then
+        add('and c.flpaga = 1')
+     else if rbNaoPagas.Checked= true then
+         add('and c.flpaga = 0');
+
+
+   end;
+
+   FDQrySumario.Open;
+
+
+
+   FDQryRel.Close;
+   with FDQryRel.SQL do
+   begin
+      with FDQryRel.SQL do
+      begin
+        clear;
+        add('select c.*, v.*, p.*, ic.*, i.nome, i.idunidadedemedida,(ic.vrunidade*ic.qtunidade) as vrtotalitem, u.nome as unidademedida, u.sigla');
+        add('from compra c                             ');
+        add('left join valorcompra v on v.idcompra=c.id');
+        add('left join pessoa p on c.idfornecedor=p.id ');
+        add('left join itemcompra ic on ic.idcompra = c.id');
+        add('left join item i on ic.iditem = i.id');
+        ADD('left join unidadedemedida u on u.id=i.idunidadedemedida');
+        add('where c.dtexcluiu is null                   ');
+
+        add('and c.data  >= '+ QuotedStr(FormatDateTime('dd.MM.yyyy', StrToDate(dtInicio.Text))));
+        add('and c.data < '+ QuotedStr(FormatDateTime('dd.MM.yyyy', StrToDate(dtFim.Text)+1)));
+        filtros:='compras entre '+dtInicio.Text+' e '+dtFim.Text;
+
+        if edtCodCompra.Text <> '' then
+        begin
+          filtros := filtros+', Cód: '+edtCodCompra.Text;
+          add('and c.id = '+edtCodCompra.Text);
+        end;
+
+
+        if cbFornecedor.EditValue > 0 then
+        begin
+          filtros := filtros+', fornecedor: '+cbFornecedor.Text;
+          add('and p.id = '+IntToStr(cbFornecedor.EditValue));
+        end;
+
+
+        if rbPagas.Checked = true then
+        begin
+          add('and c.flpaga = 1');
+          filtros := filtros+', Somente compras quitadas';
+        end
+        else if rbNaoPagas.Checked= true then
+        begin
+          add('and c.flpaga = 0');
+          filtros := filtros+', Somente compras em aberto';
+        end
+        else
+        begin
+          filtros := filtros+', Todas as compras quitadas e em aberto';
+        end;
+
+      end;
+   end;
+   FDQryRel.open;
+end;
+
+procedure TfrmPainelCompras.rbNaoPagasClick(Sender: TObject);
+begin
+montaQry;
+end;
+
+procedure TfrmPainelCompras.rbPagasClick(Sender: TObject);
+begin
+montaQry;
+end;
+
+procedure TfrmPainelCompras.rbTodasClick(Sender: TObject);
+begin
+montaQry;
+end;
+
 procedure TfrmPainelCompras.Relatrioemcampos1Click(Sender: TObject);
 begin
+  MontaRelatorio;
   frx.ShowReport;
 end;
 
 procedure TfrmPainelCompras.Relatrioemlinhas1Click(Sender: TObject);
 begin
+  MontaRelatorio;
+  frxEMLInhas.Variables['FILTROS']:=quotedStr(filtros);
   frxEmLinhas.ShowReport;
 end;
 
