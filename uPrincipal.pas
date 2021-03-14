@@ -13,7 +13,7 @@ uses
   dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
   dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
-  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, IniFiles, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinOffice2016Colorful,
   dxSkinOffice2016Dark, dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic,
   dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
@@ -69,6 +69,8 @@ type
   private
     { Private declarations }
   public
+    localBanco:string;
+    procedure preencheBanco;
 
   end;
 
@@ -120,7 +122,7 @@ end;
 procedure TfrmPrincipal.dxBarLargeButton7Click(Sender: TObject);
 var sCaminho:string;
 begin
-    sCaminho := 'C:\Program Files (x86)\MILK\AnyDesk.exe';
+    sCaminho := 'C:\Milk\AnyDesk.exe';
     ShellExecute(Handle,'open',pchar(sCaminho),nil,nil,sw_show)
 end;
 
@@ -139,16 +141,30 @@ end;
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
   DisableAero := True;
+  preencheBanco;
 
   DM:=TDM.Create(self);
+  DM.FDConn.Params.Database := localBanco;
 
   RBStatus.Panels[0].Text := 'V.: 1.0.0.0';
 
-  //DM.con.Connected:=true;
+  DM.FDConn.Connected:=true;
 
    // Evento que manpula as exceções
   //Application.OnException := AppException;
 
+end;
+
+procedure TfrmPrincipal.preencheBanco;
+var
+  ArqIni: TIniFile;
+begin
+  ArqIni := TIniFile.Create('C:\Milk\configMILK.ini');
+  try
+    localBanco := ArqIni.ReadString('Configuracoes', 'local', '');
+  finally
+    ArqIni.Free;
+  end;
 end;
 
 end.

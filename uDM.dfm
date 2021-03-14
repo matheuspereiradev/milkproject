@@ -1,24 +1,10 @@
 object DM: TDM
   OldCreateOrder = False
-  OnCreate = DataModuleCreate
   Height = 296
   Width = 491
-  object conexao: TADOConnection
-    ConnectionString = 
-      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
-      'fo=False;User ID=sa;Initial Catalog=petshop;Data Source=DESKTOP-' +
-      'M4DCFL0\MATHEUSQL;Use Procedure for Prepare=1;Auto Translate=Tru' +
-      'e;Packet Size=4096;Workstation ID=DESKTOP-M4DCFL0;Use Encryption' +
-      ' for Data=False;Tag with column collation when possible=False'
-    LoginPrompt = False
-    Provider = 'SQLOLEDB.1'
-    Left = 240
-    Top = 96
-  end
   object FDConn: TFDConnection
     ConnectionName = 'Milk'
     Params.Strings = (
-      'Database=C:\Users\MATHEUS-PC\Desktop\MILK.FDB'
       'User_Name=sysdba'
       'Password=masterkey'
       'DriverID=MilkDrive')

@@ -14,7 +14,6 @@ uses
 
 type
   TDM = class(TDataModule)
-    conexao: TADOConnection;
     FDConn: TFDConnection;
     FDTrans: TFDTransaction;
     LoginDialog: TFDGUIxLoginDialog;
@@ -23,7 +22,6 @@ type
     MilkDrive: TFDPhysFBDriverLink;
     FDScript: TFDScript;
     QryAux: TFDQuery;
-    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,29 +36,5 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
-
-procedure TDM.DataModuleCreate(Sender: TObject);
-var con:String;
-begin
-
-  con := 'Provider=SQLOLEDB.1;';
-  con := con +'Integrated Security=SSPI;';
-  con := con + 'Persist Security Info=False;';
-  con := con + 'Initial Catalog=crianca_feliz_jordania;';
-  con := con + 'Data Source=DESKTOP-M4DCFL0\MATHEUSQL;';
-
-  try
-    conexao.Close;
-    conexao.ConnectionString:=con;
-    conexao.ConnectOptions:= coAsyncConnect;
-    conexao.Connected := true;
-
-  except
-    on e: Exception do
-      begin
-
-      end;
-  end;
-end;
 
 end.
